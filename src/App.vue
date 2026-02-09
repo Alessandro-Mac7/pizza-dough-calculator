@@ -43,17 +43,19 @@ onMounted(() => {
 <template>
   <div class="min-h-screen bg-flour-white dark:bg-dark-bg transition-colors">
     <!-- Header -->
-    <header class="bg-gradient-to-br from-tomato to-tomato-dark text-white py-8 px-4 shadow-lg no-print relative overflow-hidden">
-      <div class="absolute inset-0 opacity-10">
+    <header
+      class="bg-gradient-to-br from-tomato to-tomato-dark text-white py-8 px-4 shadow-lg no-print relative overflow-hidden"
+    >
+      <div class="absolute inset-0 opacity-10" aria-hidden="true">
         <div class="absolute -top-4 -left-4 text-8xl animate-float-slow">🍕</div>
         <div class="absolute top-2 right-8 text-6xl animate-float-delayed">🌿</div>
         <div class="absolute bottom-1 left-1/3 text-5xl animate-float">🍅</div>
       </div>
       <div class="max-w-2xl mx-auto text-center relative z-10">
-        <h1 class="text-3xl sm:text-4xl font-bold tracking-tight">
-          🍕 Calcolatore Impasto Pizza
-        </h1>
-        <p class="text-sm opacity-80 mt-2">Calcola il tuo impasto perfetto con le percentuali del panificatore</p>
+        <h1 class="text-3xl sm:text-4xl font-bold tracking-tight">🍕 Calcolatore Impasto Pizza</h1>
+        <p class="text-sm opacity-80 mt-2">
+          Calcola il tuo impasto perfetto con le percentuali del panificatore
+        </p>
       </div>
     </header>
 
@@ -67,16 +69,10 @@ onMounted(() => {
       <RecipePresets @apply="handlePresetApply" />
 
       <!-- Step 1: Style -->
-      <StyleSelector
-        :selected-id="input.styleId"
-        @select="handleStyleSelect"
-      />
+      <StyleSelector :selected-id="input.styleId" @select="handleStyleSelect" />
 
       <!-- Step 2: Configure -->
-      <DoughCalculator
-        :input="input"
-        @update:input="input = { ...$event }"
-      />
+      <DoughCalculator :input="input" @update:input="input = { ...$event }" />
 
       <!-- Step 3: Results -->
       <IngredientTable :result="result" :input="input" />

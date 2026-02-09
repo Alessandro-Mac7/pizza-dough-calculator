@@ -1,8 +1,15 @@
 import { ref, computed } from 'vue'
-import type { DoughInput, DoughResult } from '../types'
+import type { DoughInput, DoughResult, MultiPhaseFermentation } from '../types'
 import { rangeMid, isYeastType, isFermentationMethod } from '../types'
 import { calculateDough } from '../utils/calculations'
 import { getStyleById } from '../data/styles'
+
+const DEFAULT_MULTI_PHASE: MultiPhaseFermentation = {
+  enabled: false,
+  roomPhase: { temperatureC: 22, durationH: 2 },
+  coldPhase: { temperatureC: 4, durationH: 24 },
+  temperPhase: { temperatureC: 22, durationH: 2 },
+}
 
 const DEFAULT_INPUT: DoughInput = {
   styleId: 'napoletana-stg',
@@ -18,6 +25,7 @@ const DEFAULT_INPUT: DoughInput = {
   temperatureC: 22,
   fermentationTimeH: 24,
   fermentationMethod: 'direct',
+  multiPhase: { ...DEFAULT_MULTI_PHASE },
 }
 
 export function useDoughCalculation() {
@@ -31,6 +39,9 @@ export function useDoughCalculation() {
 
     const roundDec = (n: number) => Math.round(n * 10) / 10
 
+    const defaultFermH = Math.round(rangeMid(style.fermentationH))
+    const coldDuration = Math.max(4, defaultFermH - 4)
+
     input.value = {
       ...input.value,
       styleId,
@@ -41,8 +52,14 @@ export function useDoughCalculation() {
       malt: roundDec(rangeMid(style.malt)),
       ballWeight: Math.round(rangeMid(style.ballWeight)),
       temperatureC: style.recommendedTempC,
-      fermentationTimeH: Math.round(rangeMid(style.fermentationH)),
+      fermentationTimeH: defaultFermH,
       flourId: style.recommendedFlours[0] ?? input.value.flourId,
+      multiPhase: {
+        enabled: false,
+        roomPhase: { temperatureC: style.recommendedTempC, durationH: 2 },
+        coldPhase: { temperatureC: 4, durationH: coldDuration },
+        temperPhase: { temperatureC: style.recommendedTempC, durationH: 2 },
+      },
     }
   }
 
@@ -103,6 +120,32 @@ export function useDoughCalculation() {
     const time = num('time')
     if (time && time >= 1 && time <= 120) patch.fermentationTimeH = time
 
+    // Parse multi-phase params
+    const mp = num('mp')
+    if (mp === 1) {
+      const mpRt = num('mp_rt')
+      const mpRtemp = num('mp_rtemp')
+      const mpCt = num('mp_ct')
+      const mpCtemp = num('mp_ctemp')
+      const mpTt = num('mp_tt')
+
+      patch.multiPhase = {
+        enabled: true,
+        roomPhase: {
+          temperatureC: mpRtemp && mpRtemp >= 15 && mpRtemp <= 35 ? mpRtemp : 22,
+          durationH: mpRt && mpRt >= 0 && mpRt <= 24 ? mpRt : 2,
+        },
+        coldPhase: {
+          temperatureC: mpCtemp !== undefined && mpCtemp >= 0 && mpCtemp <= 10 ? mpCtemp : 4,
+          durationH: mpCt && mpCt >= 1 && mpCt <= 96 ? mpCt : 24,
+        },
+        temperPhase: {
+          temperatureC: mpRtemp && mpRtemp >= 15 && mpRtemp <= 35 ? mpRtemp : 22,
+          durationH: mpTt && mpTt >= 0 && mpTt <= 8 ? mpTt : 2,
+        },
+      }
+    }
+
     input.value = { ...input.value, ...patch }
   }
 
@@ -123,6 +166,16 @@ export function useDoughCalculation() {
       time: String(i.fermentationTimeH),
       method: i.fermentationMethod,
     })
+
+    if (i.multiPhase?.enabled) {
+      params.set('mp', '1')
+      params.set('mp_rt', String(i.multiPhase.roomPhase.durationH))
+      params.set('mp_rtemp', String(i.multiPhase.roomPhase.temperatureC))
+      params.set('mp_ct', String(i.multiPhase.coldPhase.durationH))
+      params.set('mp_ctemp', String(i.multiPhase.coldPhase.temperatureC))
+      params.set('mp_tt', String(i.multiPhase.temperPhase.durationH))
+    }
+
     return `${window.location.origin}${window.location.pathname}?${params.toString()}`
   }
 

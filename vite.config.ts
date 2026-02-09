@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
+  base: '/pizza-dough-calculator/',
   plugins: [
     vue(),
     tailwindcss(),

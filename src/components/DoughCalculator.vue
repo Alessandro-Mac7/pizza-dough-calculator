@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { DoughInput, PizzaStyle } from '../types'
+import type { DoughInput, PizzaStyle, MultiPhaseFermentation } from '../types'
 import { getStyleById } from '../data/styles'
 import { flourTypes, getFloursForStyle } from '../data/flours'
 
@@ -29,43 +29,77 @@ function updateNum(key: keyof DoughInput, event: Event) {
 }
 
 const isTray = computed(() => style.value?.servingMode === 'tray')
+
+const multiPhaseEnabled = computed(() => props.input.multiPhase?.enabled ?? false)
+
+const multiPhaseTotalH = computed(() => {
+  const mp = props.input.multiPhase
+  if (!mp?.enabled) return 0
+  return mp.roomPhase.durationH + mp.coldPhase.durationH + mp.temperPhase.durationH
+})
+
+function updateMultiPhase(patch: Partial<MultiPhaseFermentation>) {
+  const current = props.input.multiPhase ?? {
+    enabled: false,
+    roomPhase: { temperatureC: 22, durationH: 2 },
+    coldPhase: { temperatureC: 4, durationH: 24 },
+    temperPhase: { temperatureC: 22, durationH: 2 },
+  }
+  update('multiPhase', { ...current, ...patch })
+}
+
+function updateMultiPhaseNum(
+  phase: 'roomPhase' | 'coldPhase' | 'temperPhase',
+  field: 'temperatureC' | 'durationH',
+  event: Event,
+) {
+  const val = Number((event.target as HTMLInputElement).value)
+  if (!Number.isFinite(val)) return
+  const mp = props.input.multiPhase!
+  updateMultiPhase({ [phase]: { ...mp[phase], [field]: val } })
+}
 </script>
 
 <template>
   <section class="mb-8">
-    <h2 class="text-2xl font-bold mb-4 text-wood dark:text-flour-yellow">
-      2. Configura l'Impasto
-    </h2>
+    <h2 class="text-2xl font-bold mb-4 text-wood dark:text-flour-yellow">2. Configura l'Impasto</h2>
 
     <div class="grid gap-4 sm:grid-cols-2">
       <!-- Numero pizze -->
-      <div class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md">
+      <div
+        class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md"
+      >
         <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
           {{ isTray ? '🟫 Numero Teglie' : '🍕 Numero Pizze' }}
         </label>
         <div class="flex items-center gap-3">
           <button
-            @click="update('numberOfBalls', Math.max(1, input.numberOfBalls - 1))"
             aria-label="Diminuisci quantità"
-            class="w-12 h-12 rounded-full bg-cream dark:bg-dark-border text-xl font-bold flex items-center justify-center
-              active:scale-90 transition-all cursor-pointer text-wood dark:text-dark-text
-              hover:bg-flour-yellow/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
-          >-</button>
-          <span class="text-3xl font-bold text-tomato min-w-[3ch] text-center tabular-nums transition-all" aria-live="polite">
+            class="w-12 h-12 rounded-full bg-cream dark:bg-dark-border text-xl font-bold flex items-center justify-center active:scale-90 transition-all cursor-pointer text-wood dark:text-dark-text hover:bg-flour-yellow/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
+            @click="update('numberOfBalls', Math.max(1, input.numberOfBalls - 1))"
+          >
+            -
+          </button>
+          <span
+            class="text-3xl font-bold text-tomato min-w-[3ch] text-center tabular-nums transition-all"
+            aria-live="polite"
+          >
             {{ input.numberOfBalls }}
           </span>
           <button
-            @click="update('numberOfBalls', Math.min(20, input.numberOfBalls + 1))"
             aria-label="Aumenta quantità"
-            class="w-12 h-12 rounded-full bg-cream dark:bg-dark-border text-xl font-bold flex items-center justify-center
-              active:scale-90 transition-all cursor-pointer text-wood dark:text-dark-text
-              hover:bg-flour-yellow/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
-          >+</button>
+            class="w-12 h-12 rounded-full bg-cream dark:bg-dark-border text-xl font-bold flex items-center justify-center active:scale-90 transition-all cursor-pointer text-wood dark:text-dark-text hover:bg-flour-yellow/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
+            @click="update('numberOfBalls', Math.min(20, input.numberOfBalls + 1))"
+          >
+            +
+          </button>
         </div>
       </div>
 
       <!-- Peso pallina -->
-      <div class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md">
+      <div
+        class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md"
+      >
         <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
           {{ isTray ? '⚖️ Peso Teglia (g)' : '⚖️ Peso Pallina (g)' }}
         </label>
@@ -76,27 +110,30 @@ const isTray = computed(() => style.value?.servingMode === 'tray')
             :max="style?.ballWeight.max ?? 500"
             step="10"
             :value="input.ballWeight"
-            @input="updateNum('ballWeight', $event)"
             :aria-label="isTray ? 'Peso teglia' : 'Peso pallina'"
             class="flex-1"
+            @input="updateNum('ballWeight', $event)"
           />
           <input
             type="number"
             :value="input.ballWeight"
-            @change="updateNum('ballWeight', $event)"
             aria-label="Peso in grammi"
-            class="w-20 text-center text-lg font-bold rounded-lg border border-gray-200 dark:border-dark-border
-              dark:bg-dark-border py-1 text-tomato
-              focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
+            class="w-20 text-center text-lg font-bold rounded-lg border border-gray-200 dark:border-dark-border dark:bg-dark-border py-1 text-tomato focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
+            @change="updateNum('ballWeight', $event)"
           />
         </div>
-        <div v-if="style && style.id !== 'custom'" class="text-xs text-wood-light/60 dark:text-dark-text/40 mt-1">
+        <div
+          v-if="style && style.id !== 'custom'"
+          class="text-xs text-wood-light/60 dark:text-dark-text/40 mt-1"
+        >
           Consigliato: {{ style.ballWeight.min }}-{{ style.ballWeight.max }}g
         </div>
       </div>
 
       <!-- Idratazione -->
-      <div class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md">
+      <div
+        class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md"
+      >
         <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
           💧 Idratazione (%)
         </label>
@@ -107,37 +144,38 @@ const isTray = computed(() => style.value?.servingMode === 'tray')
             :max="style?.hydration.max ?? 100"
             step="1"
             :value="input.hydration"
-            @input="updateNum('hydration', $event)"
             aria-label="Percentuale idratazione"
             class="flex-1"
+            @input="updateNum('hydration', $event)"
           />
           <input
             type="number"
             :value="input.hydration"
-            @change="updateNum('hydration', $event)"
             aria-label="Percentuale idratazione"
-            class="w-20 text-center text-lg font-bold rounded-lg border border-gray-200 dark:border-dark-border
-              dark:bg-dark-border py-1 text-tomato
-              focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
+            class="w-20 text-center text-lg font-bold rounded-lg border border-gray-200 dark:border-dark-border dark:bg-dark-border py-1 text-tomato focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
+            @change="updateNum('hydration', $event)"
           />
         </div>
-        <div v-if="style && style.id !== 'custom'" class="text-xs text-wood-light/60 dark:text-dark-text/40 mt-1">
+        <div
+          v-if="style && style.id !== 'custom'"
+          class="text-xs text-wood-light/60 dark:text-dark-text/40 mt-1"
+        >
           Consigliato: {{ style.hydration.min }}-{{ style.hydration.max }}%
         </div>
       </div>
 
       <!-- Farina -->
-      <div class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md">
+      <div
+        class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md"
+      >
         <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
           🌾 Tipo di Farina
         </label>
         <select
           :value="input.flourId"
-          @change="update('flourId', ($event.target as HTMLSelectElement).value)"
           aria-label="Tipo di farina"
-          class="w-full p-3 rounded-lg border border-gray-200 dark:border-dark-border bg-white dark:bg-dark-border
-            text-wood dark:text-dark-text text-sm cursor-pointer
-            focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
+          class="w-full p-3 rounded-lg border border-gray-200 dark:border-dark-border bg-white dark:bg-dark-border text-wood dark:text-dark-text text-sm cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
+          @change="update('flourId', ($event.target as HTMLSelectElement).value)"
         >
           <option v-for="f in availableFlours" :key="f.id" :value="f.id">
             {{ f.name }} ({{ f.protein.min }}-{{ f.protein.max }}% proteine)
@@ -146,74 +184,142 @@ const isTray = computed(() => style.value?.servingMode === 'tray')
       </div>
 
       <!-- Sale -->
-      <div class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md">
+      <div
+        class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md"
+      >
         <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
           🧂 Sale (%)
         </label>
         <div class="flex items-center gap-3">
-          <input type="range" min="0" max="5" step="0.1" :value="input.salt" @input="updateNum('salt', $event)" aria-label="Percentuale sale" class="flex-1" />
-          <input type="number" :value="input.salt" step="0.1" @change="updateNum('salt', $event)" aria-label="Percentuale sale"
-            class="w-20 text-center text-lg font-bold rounded-lg border border-gray-200 dark:border-dark-border dark:bg-dark-border py-1 text-tomato focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato" />
+          <input
+            type="range"
+            min="0"
+            max="5"
+            step="0.1"
+            :value="input.salt"
+            aria-label="Percentuale sale"
+            class="flex-1"
+            @input="updateNum('salt', $event)"
+          />
+          <input
+            type="number"
+            :value="input.salt"
+            step="0.1"
+            aria-label="Percentuale sale"
+            class="w-20 text-center text-lg font-bold rounded-lg border border-gray-200 dark:border-dark-border dark:bg-dark-border py-1 text-tomato focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
+            @change="updateNum('salt', $event)"
+          />
         </div>
       </div>
 
       <!-- Olio -->
-      <div class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md">
+      <div
+        class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md"
+      >
         <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
           🫒 Olio (%)
         </label>
         <div class="flex items-center gap-3">
-          <input type="range" min="0" max="15" step="0.5" :value="input.oil" @input="updateNum('oil', $event)" aria-label="Percentuale olio" class="flex-1" />
-          <input type="number" :value="input.oil" step="0.5" @change="updateNum('oil', $event)" aria-label="Percentuale olio"
-            class="w-20 text-center text-lg font-bold rounded-lg border border-gray-200 dark:border-dark-border dark:bg-dark-border py-1 text-tomato focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato" />
+          <input
+            type="range"
+            min="0"
+            max="15"
+            step="0.5"
+            :value="input.oil"
+            aria-label="Percentuale olio"
+            class="flex-1"
+            @input="updateNum('oil', $event)"
+          />
+          <input
+            type="number"
+            :value="input.oil"
+            step="0.5"
+            aria-label="Percentuale olio"
+            class="w-20 text-center text-lg font-bold rounded-lg border border-gray-200 dark:border-dark-border dark:bg-dark-border py-1 text-tomato focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
+            @change="updateNum('oil', $event)"
+          />
         </div>
       </div>
 
       <!-- Zucchero -->
-      <div class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md">
+      <div
+        class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md"
+      >
         <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
           🍬 Zucchero (%)
         </label>
         <div class="flex items-center gap-3">
-          <input type="range" min="0" max="10" step="0.5" :value="input.sugar" @input="updateNum('sugar', $event)" aria-label="Percentuale zucchero" class="flex-1" />
-          <input type="number" :value="input.sugar" step="0.5" @change="updateNum('sugar', $event)" aria-label="Percentuale zucchero"
-            class="w-20 text-center text-lg font-bold rounded-lg border border-gray-200 dark:border-dark-border dark:bg-dark-border py-1 text-tomato focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato" />
+          <input
+            type="range"
+            min="0"
+            max="10"
+            step="0.5"
+            :value="input.sugar"
+            aria-label="Percentuale zucchero"
+            class="flex-1"
+            @input="updateNum('sugar', $event)"
+          />
+          <input
+            type="number"
+            :value="input.sugar"
+            step="0.5"
+            aria-label="Percentuale zucchero"
+            class="w-20 text-center text-lg font-bold rounded-lg border border-gray-200 dark:border-dark-border dark:bg-dark-border py-1 text-tomato focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
+            @change="updateNum('sugar', $event)"
+          />
         </div>
       </div>
 
       <!-- Malto -->
-      <div class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md">
+      <div
+        class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md"
+      >
         <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
           🍯 Malto (%)
         </label>
         <div class="flex items-center gap-3">
-          <input type="range" min="0" max="3" step="0.1" :value="input.malt" @input="updateNum('malt', $event)" aria-label="Percentuale malto" class="flex-1" />
-          <input type="number" :value="input.malt" step="0.1" @change="updateNum('malt', $event)" aria-label="Percentuale malto"
-            class="w-20 text-center text-lg font-bold rounded-lg border border-gray-200 dark:border-dark-border dark:bg-dark-border py-1 text-tomato focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato" />
+          <input
+            type="range"
+            min="0"
+            max="3"
+            step="0.1"
+            :value="input.malt"
+            aria-label="Percentuale malto"
+            class="flex-1"
+            @input="updateNum('malt', $event)"
+          />
+          <input
+            type="number"
+            :value="input.malt"
+            step="0.1"
+            aria-label="Percentuale malto"
+            class="w-20 text-center text-lg font-bold rounded-lg border border-gray-200 dark:border-dark-border dark:bg-dark-border py-1 text-tomato focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
+            @change="updateNum('malt', $event)"
+          />
         </div>
       </div>
 
       <!-- Tipo Lievito -->
-      <div class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md">
+      <div
+        class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md"
+      >
         <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
           🍞 Tipo di Lievito
         </label>
         <div class="grid grid-cols-3 gap-2" role="radiogroup" aria-label="Tipo di lievito">
           <button
-            v-for="yt in (['fresh', 'dry', 'sourdough'] as const)"
+            v-for="yt in ['fresh', 'dry', 'sourdough'] as const"
             :key="yt"
-            @click="update('yeastType', yt)"
             :aria-pressed="input.yeastType === yt"
             role="radio"
             :aria-checked="input.yeastType === yt"
-            class="py-3 px-2 rounded-lg text-xs font-semibold transition-all cursor-pointer
-              active:scale-90
-              focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
+            class="py-3 px-2 rounded-lg text-xs font-semibold transition-all cursor-pointer active:scale-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
             :class="[
               input.yeastType === yt
                 ? 'bg-tomato text-white shadow-md'
-                : 'bg-cream dark:bg-dark-border text-wood dark:text-dark-text hover:bg-flour-yellow/20'
+                : 'bg-cream dark:bg-dark-border text-wood dark:text-dark-text hover:bg-flour-yellow/20',
             ]"
+            @click="update('yeastType', yt)"
           >
             {{ yt === 'fresh' ? '🟡 Fresco' : yt === 'dry' ? '🟤 Secco' : '🫙 Madre' }}
           </button>
@@ -221,75 +327,251 @@ const isTray = computed(() => style.value?.servingMode === 'tray')
       </div>
 
       <!-- Metodo Lievitazione -->
-      <div class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md">
+      <div
+        class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md"
+      >
         <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
           🧪 Metodo Lievitazione
         </label>
         <div class="grid grid-cols-3 gap-2" role="radiogroup" aria-label="Metodo di lievitazione">
           <button
-            v-for="m in (['direct', 'poolish', 'biga'] as const)"
+            v-for="m in ['direct', 'poolish', 'biga'] as const"
             :key="m"
-            @click="update('fermentationMethod', m)"
             :aria-pressed="input.fermentationMethod === m"
             role="radio"
             :aria-checked="input.fermentationMethod === m"
-            class="py-3 px-2 rounded-lg text-xs font-semibold transition-all cursor-pointer
-              active:scale-90
-              focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
+            class="py-3 px-2 rounded-lg text-xs font-semibold transition-all cursor-pointer active:scale-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
             :class="[
               input.fermentationMethod === m
                 ? 'bg-basil text-white shadow-md'
-                : 'bg-cream dark:bg-dark-border text-wood dark:text-dark-text hover:bg-basil/10'
+                : 'bg-cream dark:bg-dark-border text-wood dark:text-dark-text hover:bg-basil/10',
             ]"
+            @click="update('fermentationMethod', m)"
           >
             {{ m === 'direct' ? 'Diretta' : m === 'poolish' ? 'Poolish' : 'Biga' }}
           </button>
         </div>
       </div>
 
-      <!-- Temperatura -->
-      <div class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md">
-        <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
-          🌡️ Temperatura (°C)
-        </label>
-        <div class="flex items-center gap-3">
-          <input type="range" min="15" max="35" step="1" :value="input.temperatureC" @input="updateNum('temperatureC', $event)" aria-label="Temperatura ambiente" class="flex-1" />
-          <span class="text-2xl font-bold text-tomato min-w-[3ch] text-center tabular-nums" aria-live="polite">
-            {{ input.temperatureC }}°
-          </span>
+      <!-- Toggle Lievitazione in Frigo -->
+      <div
+        class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md sm:col-span-2"
+      >
+        <div class="flex items-center justify-between">
+          <label class="text-sm font-semibold text-wood-light dark:text-dark-text/70">
+            🧊 Lievitazione in Frigo (multi-fase)
+          </label>
+          <button
+            type="button"
+            role="switch"
+            :aria-checked="multiPhaseEnabled"
+            class="relative inline-flex h-7 w-12 items-center rounded-full transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
+            :class="multiPhaseEnabled ? 'bg-basil' : 'bg-gray-300 dark:bg-dark-border'"
+            @click="updateMultiPhase({ enabled: !multiPhaseEnabled })"
+          >
+            <span
+              class="inline-block h-5 w-5 rounded-full bg-white shadow-md transition-transform"
+              :class="multiPhaseEnabled ? 'translate-x-6' : 'translate-x-1'"
+            />
+          </button>
         </div>
       </div>
 
-      <!-- Tempo Lievitazione -->
-      <div class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md">
-        <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
-          ⏱️ Tempo Lievitazione (ore)
-        </label>
-        <div class="flex items-center gap-3">
-          <input
-            type="range"
-            :min="style?.fermentationH.min ?? 1"
-            :max="style?.fermentationH.max ?? 120"
-            step="1"
-            :value="input.fermentationTimeH"
-            @input="updateNum('fermentationTimeH', $event)"
-            aria-label="Tempo di lievitazione in ore"
-            class="flex-1"
-          />
-          <input
-            type="number"
-            :value="input.fermentationTimeH"
-            @change="updateNum('fermentationTimeH', $event)"
-            aria-label="Tempo di lievitazione in ore"
-            class="w-20 text-center text-lg font-bold rounded-lg border border-gray-200 dark:border-dark-border
-              dark:bg-dark-border py-1 text-tomato
-              focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
-          />
+      <!-- Single-phase: Temperatura + Tempo (shown when multi-phase OFF) -->
+      <template v-if="!multiPhaseEnabled">
+        <!-- Temperatura -->
+        <div
+          class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md"
+        >
+          <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
+            🌡️ Temperatura (°C)
+          </label>
+          <div class="flex items-center gap-3">
+            <input
+              type="range"
+              min="15"
+              max="35"
+              step="1"
+              :value="input.temperatureC"
+              aria-label="Temperatura ambiente"
+              class="flex-1"
+              @input="updateNum('temperatureC', $event)"
+            />
+            <span
+              class="text-2xl font-bold text-tomato min-w-[3ch] text-center tabular-nums"
+              aria-live="polite"
+            >
+              {{ input.temperatureC }}°
+            </span>
+          </div>
         </div>
-        <div v-if="style && style.id !== 'custom'" class="text-xs text-wood-light/60 dark:text-dark-text/40 mt-1">
-          Consigliato: {{ style.fermentationH.min }}-{{ style.fermentationH.max }}h
+
+        <!-- Tempo Lievitazione -->
+        <div
+          class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md"
+        >
+          <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
+            ⏱️ Tempo Lievitazione (ore)
+          </label>
+          <div class="flex items-center gap-3">
+            <input
+              type="range"
+              :min="style?.fermentationH.min ?? 1"
+              :max="style?.fermentationH.max ?? 120"
+              step="1"
+              :value="input.fermentationTimeH"
+              aria-label="Tempo di lievitazione in ore"
+              class="flex-1"
+              @input="updateNum('fermentationTimeH', $event)"
+            />
+            <input
+              type="number"
+              :value="input.fermentationTimeH"
+              aria-label="Tempo di lievitazione in ore"
+              class="w-20 text-center text-lg font-bold rounded-lg border border-gray-200 dark:border-dark-border dark:bg-dark-border py-1 text-tomato focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
+              @change="updateNum('fermentationTimeH', $event)"
+            />
+          </div>
+          <div
+            v-if="style && style.id !== 'custom'"
+            class="text-xs text-wood-light/60 dark:text-dark-text/40 mt-1"
+          >
+            Consigliato: {{ style.fermentationH.min }}-{{ style.fermentationH.max }}h
+          </div>
         </div>
-      </div>
+      </template>
+
+      <!-- Multi-phase sliders (shown when multi-phase ON) -->
+      <template v-if="multiPhaseEnabled && input.multiPhase">
+        <!-- Fase 1: Ambiente -->
+        <div
+          class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md"
+        >
+          <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
+            🏠 Fase 1: Ambiente
+          </label>
+          <div class="space-y-2">
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-wood-light/70 dark:text-dark-text/50 w-12">Temp</span>
+              <input
+                type="range"
+                min="15"
+                max="35"
+                step="1"
+                :value="input.multiPhase.roomPhase.temperatureC"
+                aria-label="Temperatura fase ambiente"
+                class="flex-1"
+                @input="updateMultiPhaseNum('roomPhase', 'temperatureC', $event)"
+              />
+              <span class="text-lg font-bold text-tomato min-w-[3ch] text-center tabular-nums">
+                {{ input.multiPhase.roomPhase.temperatureC }}°
+              </span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-wood-light/70 dark:text-dark-text/50 w-12">Ore</span>
+              <input
+                type="range"
+                min="0"
+                max="8"
+                step="0.5"
+                :value="input.multiPhase.roomPhase.durationH"
+                aria-label="Durata fase ambiente"
+                class="flex-1"
+                @input="updateMultiPhaseNum('roomPhase', 'durationH', $event)"
+              />
+              <span class="text-lg font-bold text-tomato min-w-[3ch] text-center tabular-nums">
+                {{ input.multiPhase.roomPhase.durationH }}h
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fase 2: Frigo -->
+        <div
+          class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md"
+        >
+          <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
+            🧊 Fase 2: Frigo
+          </label>
+          <div class="space-y-2">
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-wood-light/70 dark:text-dark-text/50 w-12">Temp</span>
+              <input
+                type="range"
+                min="0"
+                max="10"
+                step="1"
+                :value="input.multiPhase.coldPhase.temperatureC"
+                aria-label="Temperatura frigo"
+                class="flex-1"
+                @input="updateMultiPhaseNum('coldPhase', 'temperatureC', $event)"
+              />
+              <span class="text-lg font-bold text-basil min-w-[3ch] text-center tabular-nums">
+                {{ input.multiPhase.coldPhase.temperatureC }}°
+              </span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-wood-light/70 dark:text-dark-text/50 w-12">Ore</span>
+              <input
+                type="range"
+                min="4"
+                max="96"
+                step="1"
+                :value="input.multiPhase.coldPhase.durationH"
+                aria-label="Durata frigo"
+                class="flex-1"
+                @input="updateMultiPhaseNum('coldPhase', 'durationH', $event)"
+              />
+              <input
+                type="number"
+                :value="input.multiPhase.coldPhase.durationH"
+                aria-label="Ore in frigo"
+                class="w-16 text-center text-lg font-bold rounded-lg border border-gray-200 dark:border-dark-border dark:bg-dark-border py-1 text-basil focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
+                @change="updateMultiPhaseNum('coldPhase', 'durationH', $event)"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Fase 3: Ripresa -->
+        <div
+          class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md"
+        >
+          <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
+            🌡️ Fase 3: Ripresa a Temperatura Ambiente
+          </label>
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-wood-light/70 dark:text-dark-text/50 w-12">Ore</span>
+            <input
+              type="range"
+              min="0.5"
+              max="4"
+              step="0.5"
+              :value="input.multiPhase.temperPhase.durationH"
+              aria-label="Durata ripresa"
+              class="flex-1"
+              @input="updateMultiPhaseNum('temperPhase', 'durationH', $event)"
+            />
+            <span class="text-lg font-bold text-tomato min-w-[3ch] text-center tabular-nums">
+              {{ input.multiPhase.temperPhase.durationH }}h
+            </span>
+          </div>
+        </div>
+
+        <!-- Tempo Totale -->
+        <div
+          class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md flex items-center justify-center"
+        >
+          <div class="text-center">
+            <div class="text-xs font-semibold text-wood-light dark:text-dark-text/70 mb-1">
+              ⏱️ Tempo Totale
+            </div>
+            <span class="text-3xl font-bold text-tomato tabular-nums" aria-live="polite">
+              {{ multiPhaseTotalH }}h
+            </span>
+          </div>
+        </div>
+      </template>
     </div>
   </section>
 </template>

@@ -6,13 +6,9 @@ const props = defineProps<{
   schedule: FermentationSchedule
 }>()
 
-const preFermentLabel = computed(() =>
-  props.schedule.method === 'poolish' ? 'Poolish' : 'Biga'
-)
+const preFermentLabel = computed(() => (props.schedule.method === 'poolish' ? 'Poolish' : 'Biga'))
 
-const preFermentHydration = computed(() =>
-  props.schedule.method === 'poolish' ? '100%' : '45%'
-)
+const preFermentHydration = computed(() => (props.schedule.method === 'poolish' ? '100%' : '45%'))
 </script>
 
 <template>
@@ -31,26 +27,36 @@ const preFermentHydration = computed(() =>
         <div class="grid grid-cols-3 gap-3 text-center text-sm">
           <div>
             <div class="text-xs text-wood-light dark:text-dark-text/60">Farina</div>
-            <div class="font-bold text-wood dark:text-dark-text">{{ schedule.preFerment.flour }}g</div>
+            <div class="font-bold text-wood dark:text-dark-text">
+              {{ schedule.preFerment.flour }}g
+            </div>
           </div>
           <div>
             <div class="text-xs text-wood-light dark:text-dark-text/60">Acqua</div>
-            <div class="font-bold text-wood dark:text-dark-text">{{ schedule.preFerment.water }}g</div>
+            <div class="font-bold text-wood dark:text-dark-text">
+              {{ schedule.preFerment.water }}g
+            </div>
           </div>
           <div>
             <div class="text-xs text-wood-light dark:text-dark-text/60">Lievito</div>
-            <div class="font-bold text-wood dark:text-dark-text">{{ schedule.preFerment.yeast }}g</div>
+            <div class="font-bold text-wood dark:text-dark-text">
+              {{ schedule.preFerment.yeast }}g
+            </div>
           </div>
         </div>
         <div class="text-xs text-basil-dark dark:text-basil mt-2">
-          Far fermentare {{ schedule.preFerment.fermentationTimeH }}h a temperatura ambiente (idratazione {{ preFermentHydration }})
+          Far fermentare {{ schedule.preFerment.fermentationTimeH }}h a temperatura ambiente
+          (idratazione {{ preFermentHydration }})
         </div>
       </div>
     </Transition>
 
     <!-- Timeline -->
     <div class="relative pl-8" role="list" aria-label="Timeline lievitazione">
-      <div class="absolute left-3 top-0 bottom-0 w-0.5 bg-gradient-to-b from-flour-yellow/60 to-tomato/40 dark:from-dark-border dark:to-tomato/30" aria-hidden="true"></div>
+      <div
+        class="absolute left-3 top-0 bottom-0 w-0.5 bg-gradient-to-b from-flour-yellow/60 to-tomato/40 dark:from-dark-border dark:to-tomato/30"
+        aria-hidden="true"
+      ></div>
 
       <TransitionGroup name="timeline">
         <div
@@ -61,22 +67,23 @@ const preFermentHydration = computed(() =>
         >
           <!-- Pallino timeline -->
           <div
-            class="absolute -left-5 top-1 w-4 h-4 rounded-full border-2 border-white dark:border-dark-bg
-              transition-colors duration-300"
+            class="absolute -left-5 top-1 w-4 h-4 rounded-full border-2 border-white dark:border-dark-bg transition-colors duration-300"
             :class="[
               i === schedule.steps.length - 1
                 ? 'bg-tomato shadow-[0_0_8px_rgba(230,57,70,0.4)]'
-                : 'bg-flour-yellow'
+                : 'bg-flour-yellow',
             ]"
             aria-hidden="true"
           ></div>
 
-          <div class="bg-white dark:bg-dark-card rounded-xl p-3 shadow-sm transition-all duration-200
-            hover:shadow-md hover:-translate-y-px"
+          <div
+            class="bg-white dark:bg-dark-card rounded-xl p-3 shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-px"
             :class="i === schedule.steps.length - 1 ? 'ring-2 ring-tomato/20' : ''"
           >
             <div class="flex items-center gap-2 mb-1">
-              <span class="text-xs font-mono bg-cream dark:bg-dark-border rounded-md px-2 py-0.5 text-wood dark:text-dark-text font-bold">
+              <span
+                class="text-xs font-mono bg-cream dark:bg-dark-border rounded-md px-2 py-0.5 text-wood dark:text-dark-text font-bold"
+              >
                 {{ step.time }}
               </span>
               <span class="font-bold text-sm text-wood dark:text-dark-text">

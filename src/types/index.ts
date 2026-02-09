@@ -37,6 +37,18 @@ export interface PizzaStyle {
   trayDefaultCm?: number
 }
 
+export interface FermentationPhase {
+  temperatureC: number
+  durationH: number
+}
+
+export interface MultiPhaseFermentation {
+  enabled: boolean
+  roomPhase: FermentationPhase
+  coldPhase: FermentationPhase
+  temperPhase: FermentationPhase
+}
+
 export interface DoughInput {
   styleId: string
   numberOfBalls: number
@@ -51,6 +63,7 @@ export interface DoughInput {
   temperatureC: number
   fermentationTimeH: number
   fermentationMethod: FermentationMethod
+  multiPhase?: MultiPhaseFermentation
 }
 
 export interface DoughResult {
@@ -114,7 +127,11 @@ export interface RecipePreset {
 }
 
 export const YEAST_TYPES: readonly YeastType[] = ['fresh', 'dry', 'sourdough'] as const
-export const FERMENTATION_METHODS: readonly FermentationMethod[] = ['direct', 'poolish', 'biga'] as const
+export const FERMENTATION_METHODS: readonly FermentationMethod[] = [
+  'direct',
+  'poolish',
+  'biga',
+] as const
 
 export function isYeastType(v: string): v is YeastType {
   return (YEAST_TYPES as readonly string[]).includes(v)

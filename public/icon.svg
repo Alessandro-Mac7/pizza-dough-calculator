@@ -1,14 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background circle -->
   <circle cx="256" cy="256" r="256" fill="#E63946"/>
+  <!-- Pizza slice shape -->
   <path d="M256 80 L420 400 Q340 440 256 440 Q172 440 92 400 Z" fill="#F4A261"/>
-  <path d="M92 400 Q172 440 256 440 Q340 440 420 400" fill="#C68B3F"/>
+  <!-- Crust edge -->
+  <path d="M92 400 Q172 440 256 440 Q340 440 420 400" fill="#C68B3F" stroke="none"/>
+  <!-- Cheese bubbles -->
   <circle cx="220" cy="260" r="22" fill="#FFF1E0" opacity="0.7"/>
   <circle cx="300" cy="300" r="18" fill="#FFF1E0" opacity="0.7"/>
   <circle cx="250" cy="360" r="15" fill="#FFF1E0" opacity="0.6"/>
+  <!-- Tomato spots -->
   <circle cx="240" cy="200" r="16" fill="#C62D38"/>
   <circle cx="280" cy="280" r="14" fill="#C62D38"/>
   <circle cx="210" cy="330" r="12" fill="#C62D38"/>
   <circle cx="310" cy="350" r="11" fill="#C62D38"/>
+  <!-- Basil leaf -->
   <ellipse cx="270" cy="230" rx="18" ry="10" fill="#2A9D8F" transform="rotate(-30 270 230)"/>
   <ellipse cx="255" cy="240" rx="16" ry="9" fill="#1f7a6f" transform="rotate(15 255 240)"/>
 </svg>

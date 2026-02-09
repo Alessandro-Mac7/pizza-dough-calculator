@@ -10,8 +10,11 @@ import {
   trayWeight,
   roundGrams,
   roundYeast,
+  calculateMultiPhaseYeastPercent,
+  calculateEquivalentTime,
+  yeastActivityFactor,
 } from '../src/utils/calculations'
-import type { DoughInput } from '../src/types'
+import type { DoughInput, FermentationPhase } from '../src/types'
 
 // --- Helpers ---
 
@@ -301,5 +304,150 @@ describe('trayWeight', () => {
 
   it('handles square tray', () => {
     expect(trayWeight(30, 30)).toBe(630)
+  })
+})
+
+describe('calculateBiga — corrected yeast multiplier', () => {
+  it('produces ~5-7x more yeast than poolish for same conditions', () => {
+    const poolish = calculatePoolish(600, 20, 16)
+    const biga = calculateBiga(600, 20, 16)
+    const ratio = biga.yeast / poolish.yeast
+    expect(ratio).toBeGreaterThan(4)
+    expect(ratio).toBeLessThan(8)
+  })
+
+  it('produces ~1% yeast at 20°C/16h (professional reference)', () => {
+    // 300g flour in biga (50% of 600g), professional ref ~1% = 3g
+    const biga = calculateBiga(600, 20, 16)
+    const yeastPercent = (biga.yeast / biga.flour) * 100
+    expect(yeastPercent).toBeGreaterThan(0.5)
+    expect(yeastPercent).toBeLessThan(1.5)
+  })
+})
+
+describe('yeastActivityFactor', () => {
+  it('returns 1 at reference temperature (20°C)', () => {
+    expect(yeastActivityFactor(20)).toBeCloseTo(1, 5)
+  })
+
+  it('returns ~0.109 at 4°C (fridge)', () => {
+    // 2^((4-20)/5) = 2^(-3.2) ≈ 0.109
+    expect(yeastActivityFactor(4)).toBeCloseTo(0.109, 2)
+  })
+
+  it('returns 2 at 25°C', () => {
+    expect(yeastActivityFactor(25)).toBeCloseTo(2, 1)
+  })
+})
+
+describe('calculateEquivalentTime', () => {
+  it('returns exact hours for single phase at 20°C', () => {
+    const phases: FermentationPhase[] = [{ temperatureC: 20, durationH: 24 }]
+    expect(calculateEquivalentTime(phases)).toBeCloseTo(24, 1)
+  })
+
+  it('fridge 24h at 4°C → ~2.6h equivalent', () => {
+    const phases: FermentationPhase[] = [{ temperatureC: 4, durationH: 24 }]
+    const eq = calculateEquivalentTime(phases)
+    expect(eq).toBeGreaterThan(2)
+    expect(eq).toBeLessThan(3.5)
+  })
+
+  it('multi-phase: 2h@22 + 46h@4 + 2h@22 → reasonable equivalent', () => {
+    const phases: FermentationPhase[] = [
+      { temperatureC: 22, durationH: 2 },
+      { temperatureC: 4, durationH: 46 },
+      { temperatureC: 22, durationH: 2 },
+    ]
+    const eq = calculateEquivalentTime(phases)
+    // 2*1.32 + 46*0.109 + 2*1.32 ≈ 2.64 + 5.01 + 2.64 = 10.29
+    expect(eq).toBeGreaterThan(8)
+    expect(eq).toBeLessThan(13)
+  })
+})
+
+describe('calculateMultiPhaseYeastPercent', () => {
+  it('matches single-phase formula when only room temp phase', () => {
+    const phases: FermentationPhase[] = [{ temperatureC: 20, durationH: 24 }]
+    const mp = calculateMultiPhaseYeastPercent(phases, 'fresh')
+    const sp = calculateYeastPercent(20, 24, 'fresh')
+    expect(mp).toBeCloseTo(sp, 1)
+  })
+
+  it('fridge-only 4°C/24h → ~0.9% fresh (ref: ~9g/kg)', () => {
+    const phases: FermentationPhase[] = [{ temperatureC: 4, durationH: 24 }]
+    const pct = calculateMultiPhaseYeastPercent(phases, 'fresh')
+    // ~9g/kg = 0.9%
+    expect(pct).toBeGreaterThan(0.5)
+    expect(pct).toBeLessThan(1.5)
+  })
+
+  it('room phase reduces needed yeast compared to fridge-only', () => {
+    const fridgeOnly: FermentationPhase[] = [{ temperatureC: 4, durationH: 24 }]
+    const withRoom: FermentationPhase[] = [
+      { temperatureC: 22, durationH: 2 },
+      { temperatureC: 4, durationH: 24 },
+      { temperatureC: 22, durationH: 2 },
+    ]
+    const pctFridge = calculateMultiPhaseYeastPercent(fridgeOnly, 'fresh')
+    const pctWithRoom = calculateMultiPhaseYeastPercent(withRoom, 'fresh')
+    expect(pctWithRoom).toBeLessThan(pctFridge)
+  })
+
+  it('room 20°C/8h → ~3g/kg = ~0.3%', () => {
+    const phases: FermentationPhase[] = [{ temperatureC: 20, durationH: 8 }]
+    const pct = calculateMultiPhaseYeastPercent(phases, 'fresh')
+    // 0.1 * (24/8) = 0.3%
+    expect(pct).toBeCloseTo(0.3, 1)
+  })
+
+  it('room 20°C/24h → ~1g/kg = ~0.1%', () => {
+    const phases: FermentationPhase[] = [{ temperatureC: 20, durationH: 24 }]
+    const pct = calculateMultiPhaseYeastPercent(phases, 'fresh')
+    expect(pct).toBeCloseTo(0.1, 1)
+  })
+})
+
+describe('calculateDough with multi-phase', () => {
+  it('uses multi-phase yeast when enabled', () => {
+    const input = makeDoughInput({
+      multiPhase: {
+        enabled: true,
+        roomPhase: { temperatureC: 22, durationH: 2 },
+        coldPhase: { temperatureC: 4, durationH: 24 },
+        temperPhase: { temperatureC: 22, durationH: 2 },
+      },
+    })
+    const result = calculateDough(input)
+    // With fridge, yeast should be higher than room-temp 24h
+    const singlePhaseResult = calculateDough(makeDoughInput())
+    expect(result.yeast).toBeGreaterThan(singlePhaseResult.yeast)
+  })
+
+  it('ignores multi-phase when disabled', () => {
+    const input = makeDoughInput({
+      multiPhase: {
+        enabled: false,
+        roomPhase: { temperatureC: 22, durationH: 2 },
+        coldPhase: { temperatureC: 4, durationH: 24 },
+        temperPhase: { temperatureC: 22, durationH: 2 },
+      },
+    })
+    const resultWithMpOff = calculateDough(input)
+    const resultNoMp = calculateDough(makeDoughInput())
+    expect(resultWithMpOff.yeast).toBeCloseTo(resultNoMp.yeast, 1)
+  })
+
+  it('sums to total weight with multi-phase', () => {
+    const input = makeDoughInput({
+      multiPhase: {
+        enabled: true,
+        roomPhase: { temperatureC: 22, durationH: 2 },
+        coldPhase: { temperatureC: 4, durationH: 48 },
+        temperPhase: { temperatureC: 22, durationH: 2 },
+      },
+    })
+    const result = calculateDough(input)
+    expect(Math.abs(sumIngredients(result) - 1000)).toBeLessThan(2)
   })
 })

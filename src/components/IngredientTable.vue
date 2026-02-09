@@ -21,9 +21,15 @@ const rows = computed(() => {
     { emoji: '🧂', name: 'Sale', total: r.salt, perBall: r.perBall.salt },
   ]
   if (r.oil > 0) items.push({ emoji: '🫒', name: 'Olio', total: r.oil, perBall: r.perBall.oil })
-  if (r.sugar > 0) items.push({ emoji: '🍬', name: 'Zucchero', total: r.sugar, perBall: r.perBall.sugar })
+  if (r.sugar > 0)
+    items.push({ emoji: '🍬', name: 'Zucchero', total: r.sugar, perBall: r.perBall.sugar })
   if (r.malt > 0) items.push({ emoji: '🍯', name: 'Malto', total: r.malt, perBall: r.perBall.malt })
-  items.push({ emoji: '🍞', name: yeastLabels[r.yeastType], total: r.yeast, perBall: r.perBall.yeast })
+  items.push({
+    emoji: '🍞',
+    name: yeastLabels[r.yeastType],
+    total: r.yeast,
+    perBall: r.perBall.yeast,
+  })
   return items
 })
 
@@ -35,17 +41,19 @@ const isTray = computed(() => {
 
 <template>
   <section class="mb-8">
-    <h2 class="text-2xl font-bold mb-4 text-wood dark:text-flour-yellow">
-      3. La Tua Ricetta
-    </h2>
+    <h2 class="text-2xl font-bold mb-4 text-wood dark:text-flour-yellow">3. La Tua Ricetta</h2>
 
     <!-- Peso totale -->
-    <div class="bg-gradient-to-br from-tomato to-tomato-dark text-white rounded-2xl p-5 mb-4 text-center shadow-lg
-      transform transition-all duration-300 hover:scale-[1.01]">
+    <div
+      class="bg-gradient-to-br from-tomato to-tomato-dark text-white rounded-2xl p-5 mb-4 text-center shadow-lg transform transition-all duration-300 hover:scale-[1.01]"
+    >
       <div class="text-sm font-medium opacity-80">Peso Totale Impasto</div>
       <div class="text-5xl font-bold mt-1 tabular-nums animate-in">{{ result.totalWeight }}g</div>
       <div class="text-sm opacity-80 mt-2">
-        {{ input.numberOfBalls }} {{ input.numberOfBalls === 1 ? (isTray ? 'teglia' : 'pizza') : (isTray ? 'teglie' : 'pizze') }}
+        {{ input.numberOfBalls }}
+        {{
+          input.numberOfBalls === 1 ? (isTray ? 'teglia' : 'pizza') : isTray ? 'teglie' : 'pizze'
+        }}
         &times; {{ input.ballWeight }}g
       </div>
     </div>
@@ -67,12 +75,15 @@ const isTray = computed(() => {
             class="border-t border-gray-100 dark:border-dark-border transition-colors hover:bg-flour-yellow/5 dark:hover:bg-flour-yellow/5"
           >
             <td class="py-3 px-4 font-medium text-wood dark:text-dark-text">
-              <span class="mr-2">{{ row.emoji }}</span>{{ row.name }}
+              <span class="mr-2">{{ row.emoji }}</span
+              >{{ row.name }}
             </td>
             <td class="py-3 px-4 text-right font-bold text-lg text-tomato tabular-nums">
               {{ row.total }}g
             </td>
-            <td class="py-3 px-4 text-right text-sm text-wood-light dark:text-dark-text/60 tabular-nums">
+            <td
+              class="py-3 px-4 text-right text-sm text-wood-light dark:text-dark-text/60 tabular-nums"
+            >
               {{ row.perBall }}g
             </td>
           </tr>
