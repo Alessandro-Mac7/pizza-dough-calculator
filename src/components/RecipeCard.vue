@@ -45,19 +45,19 @@ function handlePrint() {
     <!-- Bottoni azione -->
     <div class="flex flex-wrap gap-3 mb-4">
       <button
-        class="flex-1 min-w-[130px] py-3.5 px-4 rounded-xl font-semibold text-sm transition-all cursor-pointer active:scale-[0.95] bg-basil text-white hover:bg-basil-dark shadow-sm hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-basil"
+        class="flex-1 min-w-[130px] py-3.5 px-4 font-semibold text-[9px] transition-all cursor-pointer active:scale-[0.95] border-2 border-neon-green bg-transparent text-neon-green hover:shadow-[0_0_12px_rgba(57,255,20,0.3)] hover:bg-neon-green/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-green"
         @click="showSaveForm = !showSaveForm"
       >
         💾 Salva Ricetta
       </button>
       <button
-        class="flex-1 min-w-[130px] py-3.5 px-4 rounded-xl font-semibold text-sm transition-all cursor-pointer active:scale-[0.95] bg-flour-yellow text-wood hover:bg-flour-yellow/80 shadow-sm hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-flour-yellow"
+        class="flex-1 min-w-[130px] py-3.5 px-4 font-semibold text-[9px] transition-all cursor-pointer active:scale-[0.95] border-2 border-neon-yellow bg-transparent text-neon-yellow hover:shadow-[0_0_12px_rgba(255,214,10,0.3)] hover:bg-neon-yellow/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-yellow"
         @click="handleShare"
       >
         {{ copied ? '✅ Copiato!' : '🔗 Condividi' }}
       </button>
       <button
-        class="flex-1 min-w-[130px] py-3.5 px-4 rounded-xl font-semibold text-sm transition-all cursor-pointer active:scale-[0.95] bg-wood text-white hover:bg-wood-light shadow-sm hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-wood"
+        class="flex-1 min-w-[130px] py-3.5 px-4 font-semibold text-[9px] transition-all cursor-pointer active:scale-[0.95] border-2 border-neon-cyan bg-transparent text-neon-cyan hover:shadow-[0_0_12px_rgba(0,245,255,0.3)] hover:bg-neon-cyan/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
         @click="handlePrint"
       >
         🖨️ Stampa
@@ -66,17 +66,17 @@ function handlePrint() {
 
     <!-- Form salvataggio -->
     <Transition name="expand">
-      <div v-if="showSaveForm" class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm mb-4">
+      <div v-if="showSaveForm" class="bg-arcade-panel border-2 border-arcade-border p-4 mb-4">
         <div class="flex gap-2">
           <input
             v-model="recipeName"
             placeholder="Nome ricetta..."
-            class="flex-1 py-2.5 px-3 rounded-lg border border-gray-200 dark:border-dark-border dark:bg-dark-border text-sm text-wood dark:text-dark-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-basil"
+            class="flex-1 py-2.5 px-3 border-2 border-arcade-border bg-transparent text-[9px] text-arcade-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-green"
             @keyup.enter="saveRecipe"
           />
           <button
             :disabled="!recipeName.trim()"
-            class="py-2.5 px-5 rounded-lg bg-basil text-white font-semibold text-sm cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed active:scale-95 transition-all hover:bg-basil-dark"
+            class="py-2.5 px-5 border-2 border-neon-green bg-neon-green/20 text-neon-green font-semibold text-[9px] cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed active:scale-95 transition-all hover:bg-neon-green/30"
             @click="saveRecipe"
           >
             Salva
@@ -88,12 +88,12 @@ function handlePrint() {
     <!-- Ricette salvate -->
     <div v-if="savedRecipes.length > 0">
       <button
-        class="text-sm font-semibold text-wood-light dark:text-dark-text/60 mb-2 cursor-pointer hover:text-wood dark:hover:text-dark-text transition-colors"
+        class="text-[9px] font-semibold text-arcade-text/60 mb-2 cursor-pointer hover:text-neon-cyan transition-colors"
         @click="showSaved = !showSaved"
       >
         📋 Le Mie Ricette ({{ savedRecipes.length }})
         <span
-          class="text-xs transition-transform inline-block"
+          class="text-[7px] transition-transform inline-block"
           :class="showSaved ? 'rotate-180' : ''"
           >▼</span
         >
@@ -104,20 +104,20 @@ function handlePrint() {
           <div
             v-for="recipe in savedRecipes"
             :key="recipe.id"
-            class="bg-white dark:bg-dark-card rounded-lg p-3 flex items-center justify-between shadow-sm border border-transparent hover:border-flour-yellow/30 transition-all hover:shadow-md"
+            class="bg-arcade-panel border-2 border-arcade-border p-3 flex items-center justify-between transition-all hover:border-neon-cyan/40 hover:shadow-[0_0_8px_rgba(0,245,255,0.1)]"
           >
             <button class="text-left flex-1 cursor-pointer" @click="emit('load', recipe.input)">
-              <div class="font-semibold text-sm text-wood dark:text-dark-text">
+              <div class="font-semibold text-[9px] text-arcade-text">
                 {{ recipe.name }}
               </div>
-              <div class="text-xs text-wood-light dark:text-dark-text/50">
+              <div class="text-[7px] text-arcade-text/50">
                 {{ recipe.input.numberOfBalls }}&times;{{ recipe.input.ballWeight }}g &bull;
                 {{ recipe.input.hydration }}% idratazione &bull;
                 {{ new Date(recipe.createdAt).toLocaleDateString('it-IT') }}
               </div>
             </button>
             <button
-              class="ml-2 text-tomato/50 hover:text-tomato text-sm cursor-pointer p-2 rounded-lg hover:bg-tomato/10 transition-all"
+              class="ml-2 text-neon-red/50 hover:text-neon-red text-[9px] cursor-pointer p-2 hover:bg-neon-red/10 transition-all"
               title="Elimina ricetta"
               @click="emit('delete', recipe.id)"
             >

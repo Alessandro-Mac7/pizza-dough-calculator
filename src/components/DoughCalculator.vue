@@ -62,33 +62,31 @@ function updateMultiPhaseNum(
 
 <template>
   <section class="mb-8">
-    <h2 class="text-2xl font-bold mb-4 text-wood dark:text-flour-yellow">2. Configura l'Impasto</h2>
+    <h2 class="text-[13px] font-bold mb-4 text-neon-cyan glow-text">2. Configura l'Impasto</h2>
 
     <div class="grid gap-4 sm:grid-cols-2">
       <!-- Numero pizze -->
-      <div
-        class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md"
-      >
-        <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
+      <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
+        <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
           {{ isTray ? '🟫 Numero Teglie' : '🍕 Numero Pizze' }}
         </label>
         <div class="flex items-center gap-3">
           <button
             aria-label="Diminuisci quantità"
-            class="w-12 h-12 rounded-full bg-cream dark:bg-dark-border text-xl font-bold flex items-center justify-center active:scale-90 transition-all cursor-pointer text-wood dark:text-dark-text hover:bg-flour-yellow/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
+            class="w-12 h-12 border-2 border-neon-red bg-transparent text-xl font-bold flex items-center justify-center active:scale-90 transition-all cursor-pointer text-neon-red hover:shadow-[0_0_8px_rgba(255,45,85,0.4)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             @click="update('numberOfBalls', Math.max(1, input.numberOfBalls - 1))"
           >
             -
           </button>
           <span
-            class="text-3xl font-bold text-tomato min-w-[3ch] text-center tabular-nums transition-all"
+            class="text-3xl font-bold text-neon-yellow min-w-[3ch] text-center tabular-nums transition-all glow-text"
             aria-live="polite"
           >
             {{ input.numberOfBalls }}
           </span>
           <button
             aria-label="Aumenta quantità"
-            class="w-12 h-12 rounded-full bg-cream dark:bg-dark-border text-xl font-bold flex items-center justify-center active:scale-90 transition-all cursor-pointer text-wood dark:text-dark-text hover:bg-flour-yellow/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
+            class="w-12 h-12 border-2 border-neon-green bg-transparent text-xl font-bold flex items-center justify-center active:scale-90 transition-all cursor-pointer text-neon-green hover:shadow-[0_0_8px_rgba(57,255,20,0.4)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             @click="update('numberOfBalls', Math.min(20, input.numberOfBalls + 1))"
           >
             +
@@ -97,10 +95,8 @@ function updateMultiPhaseNum(
       </div>
 
       <!-- Peso pallina -->
-      <div
-        class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md"
-      >
-        <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
+      <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
+        <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
           {{ isTray ? '⚖️ Peso Teglia (g)' : '⚖️ Peso Pallina (g)' }}
         </label>
         <div class="flex items-center gap-3">
@@ -118,23 +114,21 @@ function updateMultiPhaseNum(
             type="number"
             :value="input.ballWeight"
             aria-label="Peso in grammi"
-            class="w-20 text-center text-lg font-bold rounded-lg border border-gray-200 dark:border-dark-border dark:bg-dark-border py-1 text-tomato focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
+            class="w-20 text-center text-lg font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             @change="updateNum('ballWeight', $event)"
           />
         </div>
         <div
           v-if="style && style.id !== 'custom'"
-          class="text-xs text-wood-light/60 dark:text-dark-text/40 mt-1"
+          class="text-[7px] text-arcade-text/40 mt-1"
         >
           Consigliato: {{ style.ballWeight.min }}-{{ style.ballWeight.max }}g
         </div>
       </div>
 
       <!-- Idratazione -->
-      <div
-        class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md"
-      >
-        <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
+      <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
+        <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
           💧 Idratazione (%)
         </label>
         <div class="flex items-center gap-3">
@@ -152,29 +146,27 @@ function updateMultiPhaseNum(
             type="number"
             :value="input.hydration"
             aria-label="Percentuale idratazione"
-            class="w-20 text-center text-lg font-bold rounded-lg border border-gray-200 dark:border-dark-border dark:bg-dark-border py-1 text-tomato focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
+            class="w-20 text-center text-lg font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             @change="updateNum('hydration', $event)"
           />
         </div>
         <div
           v-if="style && style.id !== 'custom'"
-          class="text-xs text-wood-light/60 dark:text-dark-text/40 mt-1"
+          class="text-[7px] text-arcade-text/40 mt-1"
         >
           Consigliato: {{ style.hydration.min }}-{{ style.hydration.max }}%
         </div>
       </div>
 
       <!-- Farina -->
-      <div
-        class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md"
-      >
-        <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
+      <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
+        <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
           🌾 Tipo di Farina
         </label>
         <select
           :value="input.flourId"
           aria-label="Tipo di farina"
-          class="w-full p-3 rounded-lg border border-gray-200 dark:border-dark-border bg-white dark:bg-dark-border text-wood dark:text-dark-text text-sm cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
+          class="w-full p-3 border-2 border-arcade-border bg-arcade-panel text-arcade-text text-[8px] cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
           @change="update('flourId', ($event.target as HTMLSelectElement).value)"
         >
           <option v-for="f in availableFlours" :key="f.id" :value="f.id">
@@ -184,10 +176,8 @@ function updateMultiPhaseNum(
       </div>
 
       <!-- Sale -->
-      <div
-        class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md"
-      >
-        <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
+      <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
+        <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
           🧂 Sale (%)
         </label>
         <div class="flex items-center gap-3">
@@ -206,17 +196,15 @@ function updateMultiPhaseNum(
             :value="input.salt"
             step="0.1"
             aria-label="Percentuale sale"
-            class="w-20 text-center text-lg font-bold rounded-lg border border-gray-200 dark:border-dark-border dark:bg-dark-border py-1 text-tomato focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
+            class="w-20 text-center text-lg font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             @change="updateNum('salt', $event)"
           />
         </div>
       </div>
 
       <!-- Olio -->
-      <div
-        class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md"
-      >
-        <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
+      <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
+        <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
           🫒 Olio (%)
         </label>
         <div class="flex items-center gap-3">
@@ -235,17 +223,15 @@ function updateMultiPhaseNum(
             :value="input.oil"
             step="0.5"
             aria-label="Percentuale olio"
-            class="w-20 text-center text-lg font-bold rounded-lg border border-gray-200 dark:border-dark-border dark:bg-dark-border py-1 text-tomato focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
+            class="w-20 text-center text-lg font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             @change="updateNum('oil', $event)"
           />
         </div>
       </div>
 
       <!-- Zucchero -->
-      <div
-        class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md"
-      >
-        <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
+      <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
+        <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
           🍬 Zucchero (%)
         </label>
         <div class="flex items-center gap-3">
@@ -264,17 +250,15 @@ function updateMultiPhaseNum(
             :value="input.sugar"
             step="0.5"
             aria-label="Percentuale zucchero"
-            class="w-20 text-center text-lg font-bold rounded-lg border border-gray-200 dark:border-dark-border dark:bg-dark-border py-1 text-tomato focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
+            class="w-20 text-center text-lg font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             @change="updateNum('sugar', $event)"
           />
         </div>
       </div>
 
       <!-- Malto -->
-      <div
-        class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md"
-      >
-        <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
+      <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
+        <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
           🍯 Malto (%)
         </label>
         <div class="flex items-center gap-3">
@@ -293,17 +277,15 @@ function updateMultiPhaseNum(
             :value="input.malt"
             step="0.1"
             aria-label="Percentuale malto"
-            class="w-20 text-center text-lg font-bold rounded-lg border border-gray-200 dark:border-dark-border dark:bg-dark-border py-1 text-tomato focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
+            class="w-20 text-center text-lg font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             @change="updateNum('malt', $event)"
           />
         </div>
       </div>
 
       <!-- Tipo Lievito -->
-      <div
-        class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md"
-      >
-        <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
+      <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
+        <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
           🍞 Tipo di Lievito
         </label>
         <div class="grid grid-cols-3 gap-2" role="radiogroup" aria-label="Tipo di lievito">
@@ -313,11 +295,11 @@ function updateMultiPhaseNum(
             :aria-pressed="input.yeastType === yt"
             role="radio"
             :aria-checked="input.yeastType === yt"
-            class="py-3 px-2 rounded-lg text-xs font-semibold transition-all cursor-pointer active:scale-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
+            class="py-3 px-2 text-[8px] font-semibold transition-all cursor-pointer active:scale-90 border-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             :class="[
               input.yeastType === yt
-                ? 'bg-tomato text-white shadow-md'
-                : 'bg-cream dark:bg-dark-border text-wood dark:text-dark-text hover:bg-flour-yellow/20',
+                ? 'border-neon-red bg-neon-red/20 text-neon-red shadow-[0_0_8px_rgba(255,45,85,0.3)] glow-text'
+                : 'border-arcade-border bg-transparent text-arcade-text hover:border-neon-red/40',
             ]"
             @click="update('yeastType', yt)"
           >
@@ -327,10 +309,8 @@ function updateMultiPhaseNum(
       </div>
 
       <!-- Metodo Lievitazione -->
-      <div
-        class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md"
-      >
-        <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
+      <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
+        <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
           🧪 Metodo Lievitazione
         </label>
         <div class="grid grid-cols-3 gap-2" role="radiogroup" aria-label="Metodo di lievitazione">
@@ -340,11 +320,11 @@ function updateMultiPhaseNum(
             :aria-pressed="input.fermentationMethod === m"
             role="radio"
             :aria-checked="input.fermentationMethod === m"
-            class="py-3 px-2 rounded-lg text-xs font-semibold transition-all cursor-pointer active:scale-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
+            class="py-3 px-2 text-[8px] font-semibold transition-all cursor-pointer active:scale-90 border-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             :class="[
               input.fermentationMethod === m
-                ? 'bg-basil text-white shadow-md'
-                : 'bg-cream dark:bg-dark-border text-wood dark:text-dark-text hover:bg-basil/10',
+                ? 'border-neon-green bg-neon-green/20 text-neon-green shadow-[0_0_8px_rgba(57,255,20,0.3)] glow-text'
+                : 'border-arcade-border bg-transparent text-arcade-text hover:border-neon-green/40',
             ]"
             @click="update('fermentationMethod', m)"
           >
@@ -354,24 +334,22 @@ function updateMultiPhaseNum(
       </div>
 
       <!-- Toggle Lievitazione in Frigo -->
-      <div
-        class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md sm:col-span-2"
-      >
+      <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30 sm:col-span-2">
         <div class="flex items-center justify-between">
-          <label class="text-sm font-semibold text-wood-light dark:text-dark-text/70">
+          <label class="text-[8px] font-semibold text-neon-cyan/70">
             🧊 Lievitazione in Frigo (multi-fase)
           </label>
           <button
             type="button"
             role="switch"
             :aria-checked="multiPhaseEnabled"
-            class="relative inline-flex h-7 w-12 items-center rounded-full transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
-            :class="multiPhaseEnabled ? 'bg-basil' : 'bg-gray-300 dark:bg-dark-border'"
+            class="relative inline-flex h-7 w-12 items-center transition-colors cursor-pointer border-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
+            :class="multiPhaseEnabled ? 'bg-neon-green/30 border-neon-green' : 'bg-arcade-dark border-arcade-border'"
             @click="updateMultiPhase({ enabled: !multiPhaseEnabled })"
           >
             <span
-              class="inline-block h-5 w-5 rounded-full bg-white shadow-md transition-transform"
-              :class="multiPhaseEnabled ? 'translate-x-6' : 'translate-x-1'"
+              class="inline-block h-5 w-5 bg-neon-green shadow-[0_0_6px_rgba(57,255,20,0.4)] transition-transform"
+              :class="multiPhaseEnabled ? 'translate-x-6' : 'translate-x-0.5'"
             />
           </button>
         </div>
@@ -380,10 +358,8 @@ function updateMultiPhaseNum(
       <!-- Single-phase: Temperatura + Tempo (shown when multi-phase OFF) -->
       <template v-if="!multiPhaseEnabled">
         <!-- Temperatura -->
-        <div
-          class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md"
-        >
-          <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
+        <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
+          <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
             🌡️ Temperatura (°C)
           </label>
           <div class="flex items-center gap-3">
@@ -398,7 +374,7 @@ function updateMultiPhaseNum(
               @input="updateNum('temperatureC', $event)"
             />
             <span
-              class="text-2xl font-bold text-tomato min-w-[3ch] text-center tabular-nums"
+              class="text-2xl font-bold text-neon-yellow min-w-[3ch] text-center tabular-nums glow-text"
               aria-live="polite"
             >
               {{ input.temperatureC }}°
@@ -407,10 +383,8 @@ function updateMultiPhaseNum(
         </div>
 
         <!-- Tempo Lievitazione -->
-        <div
-          class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md"
-        >
-          <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
+        <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
+          <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
             ⏱️ Tempo Lievitazione (ore)
           </label>
           <div class="flex items-center gap-3">
@@ -428,13 +402,13 @@ function updateMultiPhaseNum(
               type="number"
               :value="input.fermentationTimeH"
               aria-label="Tempo di lievitazione in ore"
-              class="w-20 text-center text-lg font-bold rounded-lg border border-gray-200 dark:border-dark-border dark:bg-dark-border py-1 text-tomato focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
+              class="w-20 text-center text-lg font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
               @change="updateNum('fermentationTimeH', $event)"
             />
           </div>
           <div
             v-if="style && style.id !== 'custom'"
-            class="text-xs text-wood-light/60 dark:text-dark-text/40 mt-1"
+            class="text-[7px] text-arcade-text/40 mt-1"
           >
             Consigliato: {{ style.fermentationH.min }}-{{ style.fermentationH.max }}h
           </div>
@@ -444,15 +418,13 @@ function updateMultiPhaseNum(
       <!-- Multi-phase sliders (shown when multi-phase ON) -->
       <template v-if="multiPhaseEnabled && input.multiPhase">
         <!-- Fase 1: Ambiente -->
-        <div
-          class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md"
-        >
-          <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
+        <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
+          <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
             🏠 Fase 1: Ambiente
           </label>
           <div class="space-y-2">
             <div class="flex items-center gap-2">
-              <span class="text-xs text-wood-light/70 dark:text-dark-text/50 w-12">Temp</span>
+              <span class="text-[7px] text-arcade-text/50 w-12">Temp</span>
               <input
                 type="range"
                 min="15"
@@ -463,12 +435,12 @@ function updateMultiPhaseNum(
                 class="flex-1"
                 @input="updateMultiPhaseNum('roomPhase', 'temperatureC', $event)"
               />
-              <span class="text-lg font-bold text-tomato min-w-[3ch] text-center tabular-nums">
+              <span class="text-lg font-bold text-neon-yellow min-w-[3ch] text-center tabular-nums">
                 {{ input.multiPhase.roomPhase.temperatureC }}°
               </span>
             </div>
             <div class="flex items-center gap-2">
-              <span class="text-xs text-wood-light/70 dark:text-dark-text/50 w-12">Ore</span>
+              <span class="text-[7px] text-arcade-text/50 w-12">Ore</span>
               <input
                 type="range"
                 min="0"
@@ -479,7 +451,7 @@ function updateMultiPhaseNum(
                 class="flex-1"
                 @input="updateMultiPhaseNum('roomPhase', 'durationH', $event)"
               />
-              <span class="text-lg font-bold text-tomato min-w-[3ch] text-center tabular-nums">
+              <span class="text-lg font-bold text-neon-yellow min-w-[3ch] text-center tabular-nums">
                 {{ input.multiPhase.roomPhase.durationH }}h
               </span>
             </div>
@@ -487,15 +459,13 @@ function updateMultiPhaseNum(
         </div>
 
         <!-- Fase 2: Frigo -->
-        <div
-          class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md"
-        >
-          <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
+        <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
+          <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
             🧊 Fase 2: Frigo
           </label>
           <div class="space-y-2">
             <div class="flex items-center gap-2">
-              <span class="text-xs text-wood-light/70 dark:text-dark-text/50 w-12">Temp</span>
+              <span class="text-[7px] text-arcade-text/50 w-12">Temp</span>
               <input
                 type="range"
                 min="0"
@@ -506,12 +476,12 @@ function updateMultiPhaseNum(
                 class="flex-1"
                 @input="updateMultiPhaseNum('coldPhase', 'temperatureC', $event)"
               />
-              <span class="text-lg font-bold text-basil min-w-[3ch] text-center tabular-nums">
+              <span class="text-lg font-bold text-neon-green min-w-[3ch] text-center tabular-nums">
                 {{ input.multiPhase.coldPhase.temperatureC }}°
               </span>
             </div>
             <div class="flex items-center gap-2">
-              <span class="text-xs text-wood-light/70 dark:text-dark-text/50 w-12">Ore</span>
+              <span class="text-[7px] text-arcade-text/50 w-12">Ore</span>
               <input
                 type="range"
                 min="4"
@@ -526,7 +496,7 @@ function updateMultiPhaseNum(
                 type="number"
                 :value="input.multiPhase.coldPhase.durationH"
                 aria-label="Ore in frigo"
-                class="w-16 text-center text-lg font-bold rounded-lg border border-gray-200 dark:border-dark-border dark:bg-dark-border py-1 text-basil focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tomato"
+                class="w-16 text-center text-lg font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-green focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
                 @change="updateMultiPhaseNum('coldPhase', 'durationH', $event)"
               />
             </div>
@@ -534,14 +504,12 @@ function updateMultiPhaseNum(
         </div>
 
         <!-- Fase 3: Ripresa -->
-        <div
-          class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md"
-        >
-          <label class="block text-sm font-semibold text-wood-light dark:text-dark-text/70 mb-2">
+        <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
+          <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
             🌡️ Fase 3: Ripresa a Temperatura Ambiente
           </label>
           <div class="flex items-center gap-2">
-            <span class="text-xs text-wood-light/70 dark:text-dark-text/50 w-12">Ore</span>
+            <span class="text-[7px] text-arcade-text/50 w-12">Ore</span>
             <input
               type="range"
               min="0.5"
@@ -552,21 +520,19 @@ function updateMultiPhaseNum(
               class="flex-1"
               @input="updateMultiPhaseNum('temperPhase', 'durationH', $event)"
             />
-            <span class="text-lg font-bold text-tomato min-w-[3ch] text-center tabular-nums">
+            <span class="text-lg font-bold text-neon-yellow min-w-[3ch] text-center tabular-nums">
               {{ input.multiPhase.temperPhase.durationH }}h
             </span>
           </div>
         </div>
 
         <!-- Tempo Totale -->
-        <div
-          class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm transition-shadow hover:shadow-md flex items-center justify-center"
-        >
+        <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30 flex items-center justify-center">
           <div class="text-center">
-            <div class="text-xs font-semibold text-wood-light dark:text-dark-text/70 mb-1">
+            <div class="text-[8px] font-semibold text-neon-cyan/70 mb-1">
               ⏱️ Tempo Totale
             </div>
-            <span class="text-3xl font-bold text-tomato tabular-nums" aria-live="polite">
+            <span class="text-3xl font-bold text-neon-yellow tabular-nums glow-text" aria-live="polite">
               {{ multiPhaseTotalH }}h
             </span>
           </div>

@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import StyleSelector from './components/StyleSelector.vue'
 import DoughCalculator from './components/DoughCalculator.vue'
 import IngredientTable from './components/IngredientTable.vue'
 import FermentationTimer from './components/FermentationTimer.vue'
 import RecipePresets from './components/RecipePresets.vue'
 import RecipeCard from './components/RecipeCard.vue'
+import PizzaInvaders from './components/PizzaInvaders.vue'
 import { useDoughCalculation } from './composables/useDoughCalculation'
 import { useFermentation } from './composables/useFermentation'
 import { useRecipeStorage } from './composables/useRecipeStorage'
@@ -14,6 +15,8 @@ import type { DoughInput } from './types'
 const { input, result, applyStyle, applyPreset, loadFromUrl, toShareUrl } = useDoughCalculation()
 const { schedule } = useFermentation(input, result)
 const { recipes, saveRecipe, deleteRecipe } = useRecipeStorage()
+
+const showGame = ref(false)
 
 function handleStyleSelect(styleId: string) {
   applyStyle(styleId)
@@ -41,21 +44,30 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-flour-white dark:bg-dark-bg transition-colors">
+  <div class="min-h-screen bg-arcade-dark transition-colors">
     <!-- Header -->
     <header
-      class="bg-gradient-to-br from-tomato to-tomato-dark text-white py-8 px-4 shadow-lg no-print relative overflow-hidden"
+      class="bg-arcade-dark border-b-2 border-neon-red text-pixel-white py-8 px-4 no-print relative overflow-hidden"
     >
-      <div class="absolute inset-0 opacity-10" aria-hidden="true">
-        <div class="absolute -top-4 -left-4 text-8xl animate-float-slow">🍕</div>
-        <div class="absolute top-2 right-8 text-6xl animate-float-delayed">🌿</div>
-        <div class="absolute bottom-1 left-1/3 text-5xl animate-float">🍅</div>
+      <div class="absolute inset-0 opacity-15" aria-hidden="true">
+        <div class="absolute -top-4 -left-4 text-8xl animate-float-slow" style="filter: drop-shadow(0 0 8px rgba(255,214,10,0.4))">🍕</div>
+        <div class="absolute top-2 right-8 text-6xl animate-float-delayed" style="filter: drop-shadow(0 0 8px rgba(57,255,20,0.4))">🌿</div>
+        <div class="absolute bottom-1 left-1/3 text-5xl animate-float" style="filter: drop-shadow(0 0 8px rgba(255,45,85,0.4))">🍅</div>
       </div>
       <div class="max-w-2xl mx-auto text-center relative z-10">
-        <h1 class="text-3xl sm:text-4xl font-bold tracking-tight">🍕 Calcolatore Impasto Pizza</h1>
-        <p class="text-sm opacity-80 mt-2">
+        <h1 class="text-[16px] sm:text-[18px] font-bold tracking-tight text-neon-yellow glow-text">
+          🍕 PIZZA DOUGH CALCULATOR
+        </h1>
+        <p class="text-[8px] text-neon-cyan/60 mt-3">
           Calcola il tuo impasto perfetto con le percentuali del panificatore
         </p>
+        <button
+          class="mt-4 arcade-btn animate-blink"
+          :class="showGame ? 'border-neon-red text-neon-red' : 'border-neon-cyan text-neon-cyan'"
+          @click="showGame = !showGame"
+        >
+          {{ showGame ? 'BACK TO KITCHEN' : 'INSERT COIN' }}
+        </button>
       </div>
     </header>
 
@@ -63,6 +75,13 @@ onMounted(() => {
     <div class="print-only text-center py-4 border-b-2 border-black mb-4">
       <h1 class="text-2xl font-bold">Ricetta Impasto Pizza</h1>
     </div>
+
+    <!-- Game section -->
+    <Transition name="arcade-slide">
+      <div v-if="showGame" class="border-b-2 border-arcade-border overflow-hidden">
+        <PizzaInvaders />
+      </div>
+    </Transition>
 
     <main class="max-w-2xl mx-auto px-4 py-6">
       <!-- Quick Presets -->
@@ -93,8 +112,8 @@ onMounted(() => {
     </main>
 
     <!-- Footer -->
-    <footer class="text-center py-6 text-xs text-wood-light/40 dark:text-dark-text/30 no-print">
-      Fatto con 🍕 e ❤️ &mdash; Calcolatore Impasto Pizza
+    <footer class="text-center py-6 text-[7px] text-arcade-text/30 no-print">
+      Fatto con 🍕 e ❤️ &mdash; PIZZA DOUGH CALCULATOR — ARCADE EDITION
     </footer>
   </div>
 </template>

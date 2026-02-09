@@ -13,7 +13,7 @@ const preFermentHydration = computed(() => (props.schedule.method === 'poolish' 
 
 <template>
   <section class="mb-8">
-    <h2 class="text-2xl font-bold mb-4 text-wood dark:text-flour-yellow">
+    <h2 class="text-[13px] font-bold mb-4 text-neon-cyan glow-text">
       ⏱️ Programma di Lievitazione
     </h2>
 
@@ -21,30 +21,30 @@ const preFermentHydration = computed(() => (props.schedule.method === 'poolish' 
     <Transition name="slide">
       <div
         v-if="schedule.preFerment"
-        class="bg-basil/10 dark:bg-basil/20 border border-basil/30 rounded-2xl p-4 mb-4"
+        class="bg-neon-green/10 border-2 border-neon-green/30 p-4 mb-4"
       >
-        <div class="font-bold text-basil mb-2">Pre-impasto: {{ preFermentLabel }}</div>
-        <div class="grid grid-cols-3 gap-3 text-center text-sm">
+        <div class="font-bold text-neon-green text-[10px] mb-2 glow-text">Pre-impasto: {{ preFermentLabel }}</div>
+        <div class="grid grid-cols-3 gap-3 text-center text-[9px]">
           <div>
-            <div class="text-xs text-wood-light dark:text-dark-text/60">Farina</div>
-            <div class="font-bold text-wood dark:text-dark-text">
+            <div class="text-[7px] text-arcade-text/60">Farina</div>
+            <div class="font-bold text-arcade-text">
               {{ schedule.preFerment.flour }}g
             </div>
           </div>
           <div>
-            <div class="text-xs text-wood-light dark:text-dark-text/60">Acqua</div>
-            <div class="font-bold text-wood dark:text-dark-text">
+            <div class="text-[7px] text-arcade-text/60">Acqua</div>
+            <div class="font-bold text-arcade-text">
               {{ schedule.preFerment.water }}g
             </div>
           </div>
           <div>
-            <div class="text-xs text-wood-light dark:text-dark-text/60">Lievito</div>
-            <div class="font-bold text-wood dark:text-dark-text">
+            <div class="text-[7px] text-arcade-text/60">Lievito</div>
+            <div class="font-bold text-arcade-text">
               {{ schedule.preFerment.yeast }}g
             </div>
           </div>
         </div>
-        <div class="text-xs text-basil-dark dark:text-basil mt-2">
+        <div class="text-[7px] text-neon-green/70 mt-2">
           Far fermentare {{ schedule.preFerment.fermentationTimeH }}h a temperatura ambiente
           (idratazione {{ preFermentHydration }})
         </div>
@@ -54,7 +54,7 @@ const preFermentHydration = computed(() => (props.schedule.method === 'poolish' 
     <!-- Timeline -->
     <div class="relative pl-8" role="list" aria-label="Timeline lievitazione">
       <div
-        class="absolute left-3 top-0 bottom-0 w-0.5 bg-gradient-to-b from-flour-yellow/60 to-tomato/40 dark:from-dark-border dark:to-tomato/30"
+        class="absolute left-3 top-0 bottom-0 w-0.5 border-l-2 border-dashed border-neon-yellow/40"
         aria-hidden="true"
       ></div>
 
@@ -65,32 +65,32 @@ const preFermentHydration = computed(() => (props.schedule.method === 'poolish' 
           class="relative mb-4 last:mb-0"
           role="listitem"
         >
-          <!-- Pallino timeline -->
+          <!-- Pallino timeline — square for arcade -->
           <div
-            class="absolute -left-5 top-1 w-4 h-4 rounded-full border-2 border-white dark:border-dark-bg transition-colors duration-300"
+            class="absolute -left-5 top-1 w-4 h-4 border-2 border-arcade-dark transition-colors duration-300"
             :class="[
               i === schedule.steps.length - 1
-                ? 'bg-tomato shadow-[0_0_8px_rgba(230,57,70,0.4)]'
-                : 'bg-flour-yellow',
+                ? 'bg-neon-red shadow-[0_0_8px_rgba(255,45,85,0.5)]'
+                : 'bg-neon-green',
             ]"
             aria-hidden="true"
           ></div>
 
           <div
-            class="bg-white dark:bg-dark-card rounded-xl p-3 shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-px"
-            :class="i === schedule.steps.length - 1 ? 'ring-2 ring-tomato/20' : ''"
+            class="bg-arcade-panel border-2 border-arcade-border p-3 transition-all duration-200 hover:border-neon-cyan/30 hover:-translate-y-px"
+            :class="i === schedule.steps.length - 1 ? 'border-neon-red/40 shadow-[0_0_10px_rgba(255,45,85,0.15)]' : ''"
           >
             <div class="flex items-center gap-2 mb-1">
               <span
-                class="text-xs font-mono bg-cream dark:bg-dark-border rounded-md px-2 py-0.5 text-wood dark:text-dark-text font-bold"
+                class="text-[8px] font-mono bg-arcade-dark border border-arcade-border px-2 py-0.5 text-neon-yellow font-bold"
               >
                 {{ step.time }}
               </span>
-              <span class="font-bold text-sm text-wood dark:text-dark-text">
+              <span class="font-bold text-[9px] text-arcade-text">
                 {{ step.action }}
               </span>
             </div>
-            <p class="text-xs text-wood-light dark:text-dark-text/60 leading-relaxed">
+            <p class="text-[7px] text-arcade-text/60 leading-relaxed">
               {{ step.description }}
             </p>
           </div>
