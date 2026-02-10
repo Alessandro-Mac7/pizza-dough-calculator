@@ -373,12 +373,13 @@ function updateMultiPhaseNum(
               class="flex-1"
               @input="updateNum('temperatureC', $event)"
             />
-            <span
-              class="text-[14px] font-bold text-neon-yellow min-w-[3ch] text-center tabular-nums tracking-[1px]"
-              aria-live="polite"
-            >
-              {{ input.temperatureC }}°
-            </span>
+            <input
+              type="number"
+              :value="input.temperatureC"
+              aria-label="Temperatura ambiente"
+              class="w-16 shrink-0 text-center text-[11px] font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
+              @change="updateNum('temperatureC', $event)"
+            />
           </div>
         </div>
 
