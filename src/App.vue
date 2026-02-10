@@ -68,7 +68,7 @@ onMounted(() => {
 
     <!-- Print header -->
     <div class="print-only text-center py-4 border-b-2 border-black mb-4">
-      <h1 class="text-2xl font-bold">Ricetta Impasto Pizza</h1>
+      <h1 class="text-2xl font-bold">🍕 PIZZA DOUGH CALCULATOR</h1>
     </div>
 
     <!-- Game section -->
