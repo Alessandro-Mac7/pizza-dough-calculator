@@ -202,7 +202,7 @@ input[type='range']::-webkit-slider-thumb {
   background: var(--color-neon-green);
   cursor: pointer;
   border: 2px solid var(--color-neon-green);
-  box-shadow: 0 0 8px rgba(57, 255, 20, 0.4);
+  box-shadow: none;
   transition:
     transform 0.15s,
     box-shadow 0.15s;
@@ -210,7 +210,7 @@ input[type='range']::-webkit-slider-thumb {
 
 input[type='range']::-webkit-slider-thumb:hover {
   transform: scale(1.15);
-  box-shadow: 0 0 14px rgba(57, 255, 20, 0.7);
+  box-shadow: none;
 }
 
 input[type='range']::-webkit-slider-thumb:active {
@@ -224,7 +224,7 @@ input[type='range']::-moz-range-thumb {
   background: var(--color-neon-green);
   cursor: pointer;
   border: 2px solid var(--color-neon-green);
-  box-shadow: 0 0 8px rgba(57, 255, 20, 0.4);
+  box-shadow: none;
   transition:
     transform 0.15s,
     box-shadow 0.15s;
@@ -232,7 +232,7 @@ input[type='range']::-moz-range-thumb {
 
 input[type='range']::-moz-range-thumb:hover {
   transform: scale(1.15);
-  box-shadow: 0 0 14px rgba(57, 255, 20, 0.7);
+  box-shadow: none;
 }
 
 /* Arcade button base style */
@@ -252,9 +252,6 @@ input[type='range']::-moz-range-thumb:hover {
 }
 
 .arcade-btn:hover {
-  box-shadow:
-    0 0 10px var(--color-neon-cyan),
-    inset 0 0 10px rgba(0, 245, 255, 0.1);
   background: rgba(0, 245, 255, 0.1);
 }
 
@@ -262,9 +259,12 @@ input[type='range']::-moz-range-thumb:hover {
   transform: scale(0.95);
 }
 
-/* Subtle glow — only for key values, not titles */
-.glow-text {
-  text-shadow: 0 0 6px currentColor;
+/* All boxes contain their text */
+.bg-arcade-panel,
+.arcade-card {
+  overflow: hidden;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 /* Arcade card base */

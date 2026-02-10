@@ -20,7 +20,7 @@ const emit = defineEmits<{
         class="relative p-4 text-left transition-all duration-300 border-2 cursor-pointer hover:-translate-y-0.5 active:scale-[0.97]"
         :class="[
           selectedId === style.id
-            ? 'border-neon-green bg-neon-green/10 shadow-[0_0_12px_rgba(57,255,20,0.3)]'
+            ? 'border-neon-green bg-neon-green/10'
             : 'border-arcade-border bg-arcade-panel hover:border-neon-cyan/50',
         ]"
         @click="emit('select', style.id)"

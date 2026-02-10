@@ -70,7 +70,7 @@ const preFermentHydration = computed(() => (props.schedule.method === 'poolish' 
             class="absolute -left-5 top-1 w-4 h-4 border-2 border-arcade-dark transition-colors duration-300"
             :class="[
               i === schedule.steps.length - 1
-                ? 'bg-neon-red shadow-[0_0_8px_rgba(255,45,85,0.5)]'
+                ? 'bg-neon-red'
                 : 'bg-neon-green',
             ]"
             aria-hidden="true"
@@ -78,7 +78,7 @@ const preFermentHydration = computed(() => (props.schedule.method === 'poolish' 
 
           <div
             class="bg-arcade-panel border-2 border-arcade-border p-3 transition-all duration-200 hover:border-neon-cyan/30 hover:-translate-y-px"
-            :class="i === schedule.steps.length - 1 ? 'border-neon-red/40 shadow-[0_0_10px_rgba(255,45,85,0.15)]' : ''"
+            :class="i === schedule.steps.length - 1 ? 'border-neon-red/40' : ''"
           >
             <div class="flex items-center gap-2 mb-1">
               <span

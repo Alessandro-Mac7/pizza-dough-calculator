@@ -45,19 +45,19 @@ function handlePrint() {
     <!-- Bottoni azione -->
     <div class="flex flex-wrap gap-3 mb-4">
       <button
-        class="flex-1 min-w-[130px] py-3.5 px-4 font-semibold text-[9px] transition-all cursor-pointer active:scale-[0.95] border-2 border-neon-green bg-transparent text-neon-green hover:shadow-[0_0_12px_rgba(57,255,20,0.3)] hover:bg-neon-green/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-green"
+        class="flex-1 min-w-[130px] py-3.5 px-4 font-semibold text-[9px] transition-all cursor-pointer active:scale-[0.95] border-2 border-neon-green bg-transparent text-neon-green hover:bg-neon-green/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-green"
         @click="showSaveForm = !showSaveForm"
       >
         💾 Salva Ricetta
       </button>
       <button
-        class="flex-1 min-w-[130px] py-3.5 px-4 font-semibold text-[9px] transition-all cursor-pointer active:scale-[0.95] border-2 border-neon-yellow bg-transparent text-neon-yellow hover:shadow-[0_0_12px_rgba(255,214,10,0.3)] hover:bg-neon-yellow/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-yellow"
+        class="flex-1 min-w-[130px] py-3.5 px-4 font-semibold text-[9px] transition-all cursor-pointer active:scale-[0.95] border-2 border-neon-yellow bg-transparent text-neon-yellow hover:bg-neon-yellow/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-yellow"
         @click="handleShare"
       >
         {{ copied ? '✅ Copiato!' : '🔗 Condividi' }}
       </button>
       <button
-        class="flex-1 min-w-[130px] py-3.5 px-4 font-semibold text-[9px] transition-all cursor-pointer active:scale-[0.95] border-2 border-neon-cyan bg-transparent text-neon-cyan hover:shadow-[0_0_12px_rgba(0,245,255,0.3)] hover:bg-neon-cyan/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
+        class="flex-1 min-w-[130px] py-3.5 px-4 font-semibold text-[9px] transition-all cursor-pointer active:scale-[0.95] border-2 border-neon-cyan bg-transparent text-neon-cyan hover:bg-neon-cyan/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
         @click="handlePrint"
       >
         🖨️ Stampa
@@ -104,7 +104,7 @@ function handlePrint() {
           <div
             v-for="recipe in savedRecipes"
             :key="recipe.id"
-            class="bg-arcade-panel border-2 border-arcade-border p-3 flex items-center justify-between transition-all hover:border-neon-cyan/40 hover:shadow-[0_0_8px_rgba(0,245,255,0.1)]"
+            class="bg-arcade-panel border-2 border-arcade-border p-3 flex items-center justify-between transition-all hover:border-neon-cyan/40"
           >
             <button class="text-left flex-1 cursor-pointer" @click="emit('load', recipe.input)">
               <div class="font-semibold text-[9px] text-arcade-text">

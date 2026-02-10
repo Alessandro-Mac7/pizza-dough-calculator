@@ -73,20 +73,20 @@ function updateMultiPhaseNum(
         <div class="flex items-center gap-3">
           <button
             aria-label="Diminuisci quantità"
-            class="w-12 h-12 border-2 border-neon-red bg-transparent text-xl font-bold flex items-center justify-center active:scale-90 transition-all cursor-pointer text-neon-red hover:shadow-[0_0_8px_rgba(255,45,85,0.4)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
+            class="w-12 h-12 border-2 border-neon-red bg-transparent text-xl font-bold flex items-center justify-center active:scale-90 transition-all cursor-pointer text-neon-red hover:bg-neon-red/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             @click="update('numberOfBalls', Math.max(1, input.numberOfBalls - 1))"
           >
             -
           </button>
           <span
-            class="text-3xl font-bold text-neon-yellow min-w-[3ch] text-center tabular-nums transition-all glow-text"
+            class="text-3xl font-bold text-neon-yellow min-w-[3ch] text-center tabular-nums transition-all"
             aria-live="polite"
           >
             {{ input.numberOfBalls }}
           </span>
           <button
             aria-label="Aumenta quantità"
-            class="w-12 h-12 border-2 border-neon-green bg-transparent text-xl font-bold flex items-center justify-center active:scale-90 transition-all cursor-pointer text-neon-green hover:shadow-[0_0_8px_rgba(57,255,20,0.4)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
+            class="w-12 h-12 border-2 border-neon-green bg-transparent text-xl font-bold flex items-center justify-center active:scale-90 transition-all cursor-pointer text-neon-green hover:bg-neon-green/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             @click="update('numberOfBalls', Math.min(20, input.numberOfBalls + 1))"
           >
             +
@@ -298,7 +298,7 @@ function updateMultiPhaseNum(
             class="py-3 px-2 text-[8px] font-semibold transition-all cursor-pointer active:scale-90 border-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             :class="[
               input.yeastType === yt
-                ? 'border-neon-red bg-neon-red/20 text-neon-red shadow-[0_0_8px_rgba(255,45,85,0.3)]'
+                ? 'border-neon-red bg-neon-red/20 text-neon-red'
                 : 'border-arcade-border bg-transparent text-arcade-text hover:border-neon-red/40',
             ]"
             @click="update('yeastType', yt)"
@@ -323,7 +323,7 @@ function updateMultiPhaseNum(
             class="py-3 px-2 text-[8px] font-semibold transition-all cursor-pointer active:scale-90 border-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             :class="[
               input.fermentationMethod === m
-                ? 'border-neon-green bg-neon-green/20 text-neon-green shadow-[0_0_8px_rgba(57,255,20,0.3)]'
+                ? 'border-neon-green bg-neon-green/20 text-neon-green'
                 : 'border-arcade-border bg-transparent text-arcade-text hover:border-neon-green/40',
             ]"
             @click="update('fermentationMethod', m)"
@@ -348,7 +348,7 @@ function updateMultiPhaseNum(
             @click="updateMultiPhase({ enabled: !multiPhaseEnabled })"
           >
             <span
-              class="inline-block h-5 w-5 bg-neon-green shadow-[0_0_6px_rgba(57,255,20,0.4)] transition-transform"
+              class="inline-block h-5 w-5 bg-neon-green transition-transform"
               :class="multiPhaseEnabled ? 'translate-x-6' : 'translate-x-0.5'"
             />
           </button>
@@ -374,7 +374,7 @@ function updateMultiPhaseNum(
               @input="updateNum('temperatureC', $event)"
             />
             <span
-              class="text-2xl font-bold text-neon-yellow min-w-[3ch] text-center tabular-nums glow-text"
+              class="text-2xl font-bold text-neon-yellow min-w-[3ch] text-center tabular-nums"
               aria-live="polite"
             >
               {{ input.temperatureC }}°
@@ -532,7 +532,7 @@ function updateMultiPhaseNum(
             <div class="text-[8px] font-semibold text-neon-cyan/70 mb-1">
               ⏱️ Tempo Totale
             </div>
-            <span class="text-3xl font-bold text-neon-yellow tabular-nums glow-text" aria-live="polite">
+            <span class="text-3xl font-bold text-neon-yellow tabular-nums" aria-live="polite">
               {{ multiPhaseTotalH }}h
             </span>
           </div>
