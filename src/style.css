@@ -336,6 +336,7 @@ input[type='range'] {
   body {
     background: white !important;
     color: black !important;
+    font-size: 12px !important;
   }
   body::after {
     display: none !important;
@@ -345,6 +346,23 @@ input[type='range'] {
   }
   .print-only {
     display: block !important;
+  }
+  * {
+    color: black !important;
+    border-color: #333 !important;
+    background: white !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+  }
+  table {
+    border-collapse: collapse;
+  }
+  th,
+  td {
+    border: 1px solid #999 !important;
+  }
+  .arcade-title {
+    border-bottom-color: black !important;
   }
 }
 

@@ -80,16 +80,22 @@ onMounted(() => {
 
     <main class="max-w-4xl mx-auto px-4 py-6 lg:px-8">
       <!-- Step 1: Style -->
-      <StyleSelector :selected-id="input.styleId" @select="handleStyleSelect" />
+      <div class="no-print">
+        <StyleSelector :selected-id="input.styleId" @select="handleStyleSelect" />
+      </div>
 
       <!-- Step 2: Configure -->
-      <DoughCalculator :input="input" @update:input="input = { ...$event }" />
+      <div class="no-print">
+        <DoughCalculator :input="input" @update:input="input = { ...$event }" />
+      </div>
 
       <!-- Step 3: Results -->
       <IngredientTable :result="result" :input="input" />
 
       <!-- Fermentation Schedule -->
-      <FermentationTimer :schedule="schedule" />
+      <div class="no-print">
+        <FermentationTimer :schedule="schedule" />
+      </div>
 
       <!-- Save / Share / Print -->
       <RecipeCard
