@@ -79,7 +79,7 @@ function updateMultiPhaseNum(
             -
           </button>
           <span
-            class="text-3xl font-bold text-neon-yellow min-w-[3ch] text-center tabular-nums transition-all"
+            class="text-[14px] font-bold text-neon-yellow min-w-[3ch] text-center tabular-nums transition-all tracking-[1px]"
             aria-live="polite"
           >
             {{ input.numberOfBalls }}
@@ -374,7 +374,7 @@ function updateMultiPhaseNum(
               @input="updateNum('temperatureC', $event)"
             />
             <span
-              class="text-2xl font-bold text-neon-yellow min-w-[3ch] text-center tabular-nums"
+              class="text-[14px] font-bold text-neon-yellow min-w-[3ch] text-center tabular-nums tracking-[1px]"
               aria-live="polite"
             >
               {{ input.temperatureC }}°
@@ -435,7 +435,7 @@ function updateMultiPhaseNum(
                 class="flex-1"
                 @input="updateMultiPhaseNum('roomPhase', 'temperatureC', $event)"
               />
-              <span class="text-lg font-bold text-neon-yellow min-w-[3ch] text-center tabular-nums">
+              <span class="text-[11px] font-bold text-neon-yellow min-w-[3ch] text-center tabular-nums tracking-[1px]">
                 {{ input.multiPhase.roomPhase.temperatureC }}°
               </span>
             </div>
@@ -451,7 +451,7 @@ function updateMultiPhaseNum(
                 class="flex-1"
                 @input="updateMultiPhaseNum('roomPhase', 'durationH', $event)"
               />
-              <span class="text-lg font-bold text-neon-yellow min-w-[3ch] text-center tabular-nums">
+              <span class="text-[11px] font-bold text-neon-yellow min-w-[3ch] text-center tabular-nums tracking-[1px]">
                 {{ input.multiPhase.roomPhase.durationH }}h
               </span>
             </div>
@@ -476,7 +476,7 @@ function updateMultiPhaseNum(
                 class="flex-1"
                 @input="updateMultiPhaseNum('coldPhase', 'temperatureC', $event)"
               />
-              <span class="text-lg font-bold text-neon-green min-w-[3ch] text-center tabular-nums">
+              <span class="text-[11px] font-bold text-neon-green min-w-[3ch] text-center tabular-nums tracking-[1px]">
                 {{ input.multiPhase.coldPhase.temperatureC }}°
               </span>
             </div>
@@ -520,7 +520,7 @@ function updateMultiPhaseNum(
               class="flex-1"
               @input="updateMultiPhaseNum('temperPhase', 'durationH', $event)"
             />
-            <span class="text-lg font-bold text-neon-yellow min-w-[3ch] text-center tabular-nums">
+            <span class="text-[11px] font-bold text-neon-yellow min-w-[3ch] text-center tabular-nums tracking-[1px]">
               {{ input.multiPhase.temperPhase.durationH }}h
             </span>
           </div>
@@ -532,7 +532,7 @@ function updateMultiPhaseNum(
             <div class="text-[8px] font-semibold text-neon-cyan/70 mb-1">
               ⏱️ Tempo Totale
             </div>
-            <span class="text-3xl font-bold text-neon-yellow tabular-nums" aria-live="polite">
+            <span class="text-[14px] font-bold text-neon-yellow tabular-nums tracking-[1px]" aria-live="polite">
               {{ multiPhaseTotalH }}h
             </span>
           </div>
