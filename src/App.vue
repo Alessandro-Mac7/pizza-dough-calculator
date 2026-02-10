@@ -93,9 +93,7 @@ onMounted(() => {
       <IngredientTable :result="result" :input="input" />
 
       <!-- Fermentation Schedule -->
-      <div class="no-print">
-        <FermentationTimer :schedule="schedule" />
-      </div>
+      <FermentationTimer :schedule="schedule" />
 
       <!-- Save / Share / Print -->
       <RecipeCard
