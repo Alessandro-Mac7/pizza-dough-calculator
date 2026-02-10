@@ -62,9 +62,9 @@ function updateMultiPhaseNum(
 
 <template>
   <section class="mb-8">
-    <h2 class="text-[13px] font-bold mb-4 text-neon-cyan glow-text">2. Configura l'Impasto</h2>
+    <h2 class="text-[13px] sm:text-[14px] font-bold mb-5 text-neon-cyan arcade-title">2. CONFIGURA L'IMPASTO</h2>
 
-    <div class="grid gap-4 sm:grid-cols-2">
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       <!-- Numero pizze -->
       <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
         <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
@@ -298,7 +298,7 @@ function updateMultiPhaseNum(
             class="py-3 px-2 text-[8px] font-semibold transition-all cursor-pointer active:scale-90 border-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             :class="[
               input.yeastType === yt
-                ? 'border-neon-red bg-neon-red/20 text-neon-red shadow-[0_0_8px_rgba(255,45,85,0.3)] glow-text'
+                ? 'border-neon-red bg-neon-red/20 text-neon-red shadow-[0_0_8px_rgba(255,45,85,0.3)]'
                 : 'border-arcade-border bg-transparent text-arcade-text hover:border-neon-red/40',
             ]"
             @click="update('yeastType', yt)"
@@ -323,7 +323,7 @@ function updateMultiPhaseNum(
             class="py-3 px-2 text-[8px] font-semibold transition-all cursor-pointer active:scale-90 border-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             :class="[
               input.fermentationMethod === m
-                ? 'border-neon-green bg-neon-green/20 text-neon-green shadow-[0_0_8px_rgba(57,255,20,0.3)] glow-text'
+                ? 'border-neon-green bg-neon-green/20 text-neon-green shadow-[0_0_8px_rgba(57,255,20,0.3)]'
                 : 'border-arcade-border bg-transparent text-arcade-text hover:border-neon-green/40',
             ]"
             @click="update('fermentationMethod', m)"
@@ -334,7 +334,7 @@ function updateMultiPhaseNum(
       </div>
 
       <!-- Toggle Lievitazione in Frigo -->
-      <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30 sm:col-span-2">
+      <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30 sm:col-span-2 lg:col-span-3">
         <div class="flex items-center justify-between">
           <label class="text-[8px] font-semibold text-neon-cyan/70">
             🧊 Lievitazione in Frigo (multi-fase)

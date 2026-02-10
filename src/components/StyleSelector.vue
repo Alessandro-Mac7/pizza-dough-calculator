@@ -12,8 +12,8 @@ const emit = defineEmits<{
 
 <template>
   <section class="mb-8">
-    <h2 class="text-[13px] font-bold mb-4 text-neon-cyan glow-text">1. Scegli lo Stile</h2>
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+    <h2 class="text-[13px] sm:text-[14px] font-bold mb-5 text-neon-cyan arcade-title">1. SCEGLI LO STILE</h2>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 lg:gap-4">
       <button
         v-for="style in pizzaStyles"
         :key="style.id"

@@ -4,7 +4,6 @@ import StyleSelector from './components/StyleSelector.vue'
 import DoughCalculator from './components/DoughCalculator.vue'
 import IngredientTable from './components/IngredientTable.vue'
 import FermentationTimer from './components/FermentationTimer.vue'
-import RecipePresets from './components/RecipePresets.vue'
 import RecipeCard from './components/RecipeCard.vue'
 import PizzaInvaders from './components/PizzaInvaders.vue'
 import { useDoughCalculation } from './composables/useDoughCalculation'
@@ -12,7 +11,7 @@ import { useFermentation } from './composables/useFermentation'
 import { useRecipeStorage } from './composables/useRecipeStorage'
 import type { DoughInput } from './types'
 
-const { input, result, applyStyle, applyPreset, loadFromUrl, toShareUrl } = useDoughCalculation()
+const { input, result, applyStyle, loadFromUrl, toShareUrl } = useDoughCalculation()
 const { schedule } = useFermentation(input, result)
 const { recipes, saveRecipe, deleteRecipe } = useRecipeStorage()
 
@@ -20,10 +19,6 @@ const showGame = ref(false)
 
 function handleStyleSelect(styleId: string) {
   applyStyle(styleId)
-}
-
-function handlePresetApply(presetInput: Partial<DoughInput>) {
-  applyPreset(presetInput)
 }
 
 function handleSave(name: string) {
@@ -54,11 +49,11 @@ onMounted(() => {
         <div class="absolute top-2 right-8 text-6xl animate-float-delayed" style="filter: drop-shadow(0 0 8px rgba(57,255,20,0.4))">🌿</div>
         <div class="absolute bottom-1 left-1/3 text-5xl animate-float" style="filter: drop-shadow(0 0 8px rgba(255,45,85,0.4))">🍅</div>
       </div>
-      <div class="max-w-2xl mx-auto text-center relative z-10">
-        <h1 class="text-[16px] sm:text-[18px] font-bold tracking-tight text-neon-yellow glow-text">
+      <div class="max-w-4xl mx-auto text-center relative z-10">
+        <h1 class="text-[16px] sm:text-[20px] lg:text-[24px] font-bold tracking-[3px] text-neon-yellow uppercase">
           🍕 PIZZA DOUGH CALCULATOR
         </h1>
-        <p class="text-[8px] text-neon-cyan/60 mt-3">
+        <p class="text-[8px] sm:text-[9px] text-neon-cyan/60 mt-3 tracking-[1px]">
           Calcola il tuo impasto perfetto con le percentuali del panificatore
         </p>
         <button
@@ -83,10 +78,7 @@ onMounted(() => {
       </div>
     </Transition>
 
-    <main class="max-w-2xl mx-auto px-4 py-6">
-      <!-- Quick Presets -->
-      <RecipePresets @apply="handlePresetApply" />
-
+    <main class="max-w-4xl mx-auto px-4 py-6 lg:px-8">
       <!-- Step 1: Style -->
       <StyleSelector :selected-id="input.styleId" @select="handleStyleSelect" />
 

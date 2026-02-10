@@ -13,8 +13,8 @@ const preFermentHydration = computed(() => (props.schedule.method === 'poolish' 
 
 <template>
   <section class="mb-8">
-    <h2 class="text-[13px] font-bold mb-4 text-neon-cyan glow-text">
-      ⏱️ Programma di Lievitazione
+    <h2 class="text-[13px] sm:text-[14px] font-bold mb-5 text-neon-cyan arcade-title">
+      ⏱️ PROGRAMMA DI LIEVITAZIONE
     </h2>
 
     <!-- Pre-impasto -->
@@ -23,7 +23,7 @@ const preFermentHydration = computed(() => (props.schedule.method === 'poolish' 
         v-if="schedule.preFerment"
         class="bg-neon-green/10 border-2 border-neon-green/30 p-4 mb-4"
       >
-        <div class="font-bold text-neon-green text-[10px] mb-2 glow-text">Pre-impasto: {{ preFermentLabel }}</div>
+        <div class="font-bold text-neon-green text-[10px] mb-2 uppercase tracking-[1px]">Pre-impasto: {{ preFermentLabel }}</div>
         <div class="grid grid-cols-3 gap-3 text-center text-[9px]">
           <div>
             <div class="text-[7px] text-arcade-text/60">Farina</div>

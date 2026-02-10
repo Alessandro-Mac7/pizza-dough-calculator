@@ -41,14 +41,14 @@ const isTray = computed(() => {
 
 <template>
   <section class="mb-8">
-    <h2 class="text-[13px] font-bold mb-4 text-neon-cyan glow-text">3. La Tua Ricetta</h2>
+    <h2 class="text-[13px] sm:text-[14px] font-bold mb-5 text-neon-cyan arcade-title">3. LA TUA RICETTA</h2>
 
     <!-- Peso totale -->
     <div
       class="bg-arcade-panel border-2 border-neon-red p-5 mb-4 text-center shadow-[0_0_20px_rgba(255,45,85,0.2)] transform transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,45,85,0.3)]"
     >
       <div class="text-[8px] font-medium text-neon-red/80">Peso Totale Impasto</div>
-      <div class="text-[32px] font-bold mt-1 tabular-nums animate-in text-neon-yellow glow-text">{{ result.totalWeight }}g</div>
+      <div class="text-[32px] sm:text-[40px] font-bold mt-1 tabular-nums animate-in text-neon-yellow glow-text">{{ result.totalWeight }}g</div>
       <div class="text-[8px] text-arcade-text/60 mt-2">
         {{ input.numberOfBalls }}
         {{
@@ -62,10 +62,10 @@ const isTray = computed(() => {
     <div class="bg-arcade-panel border-2 border-arcade-border overflow-hidden">
       <table class="w-full">
         <thead>
-          <tr class="bg-neon-red/20 text-[8px] text-neon-red border-b-2 border-neon-red/30">
-            <th class="text-left py-3 px-4">Ingrediente</th>
-            <th class="text-right py-3 px-4">Totale</th>
-            <th class="text-right py-3 px-4">{{ isTray ? 'Per teglia' : 'Per pallina' }}</th>
+          <tr class="bg-neon-red/20 text-[8px] sm:text-[9px] text-neon-red border-b-2 border-neon-red/30">
+            <th class="text-left py-3 px-4 lg:px-6">Ingrediente</th>
+            <th class="text-right py-3 px-4 lg:px-6">Totale</th>
+            <th class="text-right py-3 px-4 lg:px-6">{{ isTray ? 'Per teglia' : 'Per pallina' }}</th>
           </tr>
         </thead>
         <tbody>
@@ -74,15 +74,15 @@ const isTray = computed(() => {
             :key="row.name"
             class="border-t border-arcade-border transition-colors hover:bg-neon-cyan/5"
           >
-            <td class="py-3 px-4 font-medium text-[9px] text-arcade-text">
+            <td class="py-3 px-4 lg:px-6 font-medium text-[9px] sm:text-[10px] text-arcade-text">
               <span class="mr-2" style="filter: drop-shadow(0 0 4px rgba(255,214,10,0.4))">{{ row.emoji }}</span
               >{{ row.name }}
             </td>
-            <td class="py-3 px-4 text-right font-bold text-[14px] text-neon-green tabular-nums glow-text">
+            <td class="py-3 px-4 lg:px-6 text-right font-bold text-[14px] sm:text-[16px] text-neon-green tabular-nums glow-text">
               {{ row.total }}g
             </td>
             <td
-              class="py-3 px-4 text-right text-[9px] text-arcade-text/60 tabular-nums"
+              class="py-3 px-4 lg:px-6 text-right text-[9px] sm:text-[10px] text-arcade-text/60 tabular-nums"
             >
               {{ row.perBall }}g
             </td>

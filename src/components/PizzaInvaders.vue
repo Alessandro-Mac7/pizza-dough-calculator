@@ -407,7 +407,7 @@ onUnmounted(() => {
 <template>
   <div class="py-4 px-2" :style="containerStyle">
     <div class="text-center mb-3">
-      <h2 class="text-[14px] text-neon-red glow-text mb-1">PIZZA INVADERS</h2>
+      <h2 class="text-[14px] sm:text-[16px] text-neon-red arcade-title border-neon-red mb-1">PIZZA INVADERS</h2>
       <p class="text-[7px] text-arcade-text/50">
         Spara mozzarelle contro i pomodori invasori!
       </p>
