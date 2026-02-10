@@ -284,18 +284,18 @@ function updateMultiPhaseNum(
       </div>
 
       <!-- Tipo Lievito -->
-      <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
-        <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
+      <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30 sm:col-span-2 lg:col-span-1">
+        <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-3">
           🍞 Tipo di Lievito
         </label>
-        <div class="grid grid-cols-3 gap-1" role="radiogroup" aria-label="Tipo di lievito">
+        <div class="grid grid-cols-3 gap-2" role="radiogroup" aria-label="Tipo di lievito">
           <button
             v-for="yt in ['fresh', 'dry', 'sourdough'] as const"
             :key="yt"
             :aria-pressed="input.yeastType === yt"
             role="radio"
             :aria-checked="input.yeastType === yt"
-            class="py-2.5 px-1 text-[6px] font-semibold transition-all cursor-pointer active:scale-90 border-2 overflow-hidden text-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
+            class="py-3 px-2 text-[7px] font-semibold transition-all cursor-pointer active:scale-90 border-2 overflow-hidden text-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             :class="[
               input.yeastType === yt
                 ? 'border-neon-red bg-neon-red/20 text-neon-red'
@@ -309,18 +309,18 @@ function updateMultiPhaseNum(
       </div>
 
       <!-- Metodo Lievitazione -->
-      <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
-        <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
+      <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30 sm:col-span-2 lg:col-span-2">
+        <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-3">
           🧪 Metodo Lievitazione
         </label>
-        <div class="grid grid-cols-3 gap-1" role="radiogroup" aria-label="Metodo di lievitazione">
+        <div class="grid grid-cols-3 gap-2" role="radiogroup" aria-label="Metodo di lievitazione">
           <button
             v-for="m in ['direct', 'poolish', 'biga'] as const"
             :key="m"
             :aria-pressed="input.fermentationMethod === m"
             role="radio"
             :aria-checked="input.fermentationMethod === m"
-            class="py-2.5 px-1 text-[6px] font-semibold transition-all cursor-pointer active:scale-90 border-2 overflow-hidden text-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
+            class="py-3 px-2 text-[7px] font-semibold transition-all cursor-pointer active:scale-90 border-2 overflow-hidden text-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             :class="[
               input.fermentationMethod === m
                 ? 'border-neon-green bg-neon-green/20 text-neon-green'
