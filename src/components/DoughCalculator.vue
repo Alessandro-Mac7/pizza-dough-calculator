@@ -99,7 +99,7 @@ function updateMultiPhaseNum(
         <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
           {{ isTray ? '⚖️ Peso Teglia (g)' : '⚖️ Peso Pallina (g)' }}
         </label>
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 min-w-0">
           <input
             type="range"
             :min="style?.ballWeight.min ?? 150"
@@ -114,7 +114,7 @@ function updateMultiPhaseNum(
             type="number"
             :value="input.ballWeight"
             aria-label="Peso in grammi"
-            class="w-20 text-center text-lg font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
+            class="w-16 shrink-0 text-center text-[11px] font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             @change="updateNum('ballWeight', $event)"
           />
         </div>
@@ -131,7 +131,7 @@ function updateMultiPhaseNum(
         <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
           💧 Idratazione (%)
         </label>
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 min-w-0">
           <input
             type="range"
             :min="style?.hydration.min ?? 50"
@@ -146,7 +146,7 @@ function updateMultiPhaseNum(
             type="number"
             :value="input.hydration"
             aria-label="Percentuale idratazione"
-            class="w-20 text-center text-lg font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
+            class="w-16 shrink-0 text-center text-[11px] font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             @change="updateNum('hydration', $event)"
           />
         </div>
@@ -180,7 +180,7 @@ function updateMultiPhaseNum(
         <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
           🧂 Sale (%)
         </label>
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 min-w-0">
           <input
             type="range"
             min="0"
@@ -196,7 +196,7 @@ function updateMultiPhaseNum(
             :value="input.salt"
             step="0.1"
             aria-label="Percentuale sale"
-            class="w-20 text-center text-lg font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
+            class="w-16 shrink-0 text-center text-[11px] font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             @change="updateNum('salt', $event)"
           />
         </div>
@@ -207,7 +207,7 @@ function updateMultiPhaseNum(
         <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
           🫒 Olio (%)
         </label>
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 min-w-0">
           <input
             type="range"
             min="0"
@@ -223,7 +223,7 @@ function updateMultiPhaseNum(
             :value="input.oil"
             step="0.5"
             aria-label="Percentuale olio"
-            class="w-20 text-center text-lg font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
+            class="w-16 shrink-0 text-center text-[11px] font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             @change="updateNum('oil', $event)"
           />
         </div>
@@ -234,7 +234,7 @@ function updateMultiPhaseNum(
         <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
           🍬 Zucchero (%)
         </label>
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 min-w-0">
           <input
             type="range"
             min="0"
@@ -250,7 +250,7 @@ function updateMultiPhaseNum(
             :value="input.sugar"
             step="0.5"
             aria-label="Percentuale zucchero"
-            class="w-20 text-center text-lg font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
+            class="w-16 shrink-0 text-center text-[11px] font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             @change="updateNum('sugar', $event)"
           />
         </div>
@@ -261,7 +261,7 @@ function updateMultiPhaseNum(
         <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
           🍯 Malto (%)
         </label>
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 min-w-0">
           <input
             type="range"
             min="0"
@@ -277,7 +277,7 @@ function updateMultiPhaseNum(
             :value="input.malt"
             step="0.1"
             aria-label="Percentuale malto"
-            class="w-20 text-center text-lg font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
+            class="w-16 shrink-0 text-center text-[11px] font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             @change="updateNum('malt', $event)"
           />
         </div>
@@ -288,14 +288,14 @@ function updateMultiPhaseNum(
         <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
           🍞 Tipo di Lievito
         </label>
-        <div class="grid grid-cols-3 gap-2" role="radiogroup" aria-label="Tipo di lievito">
+        <div class="grid grid-cols-3 gap-1" role="radiogroup" aria-label="Tipo di lievito">
           <button
             v-for="yt in ['fresh', 'dry', 'sourdough'] as const"
             :key="yt"
             :aria-pressed="input.yeastType === yt"
             role="radio"
             :aria-checked="input.yeastType === yt"
-            class="py-3 px-2 text-[8px] font-semibold transition-all cursor-pointer active:scale-90 border-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
+            class="py-2.5 px-1 text-[6px] font-semibold transition-all cursor-pointer active:scale-90 border-2 overflow-hidden text-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             :class="[
               input.yeastType === yt
                 ? 'border-neon-red bg-neon-red/20 text-neon-red'
@@ -303,7 +303,7 @@ function updateMultiPhaseNum(
             ]"
             @click="update('yeastType', yt)"
           >
-            {{ yt === 'fresh' ? '🟡 Fresco' : yt === 'dry' ? '🟤 Secco' : '🫙 Madre' }}
+            {{ yt === 'fresh' ? 'Fresco' : yt === 'dry' ? 'Secco' : 'Madre' }}
           </button>
         </div>
       </div>
@@ -313,14 +313,14 @@ function updateMultiPhaseNum(
         <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
           🧪 Metodo Lievitazione
         </label>
-        <div class="grid grid-cols-3 gap-2" role="radiogroup" aria-label="Metodo di lievitazione">
+        <div class="grid grid-cols-3 gap-1" role="radiogroup" aria-label="Metodo di lievitazione">
           <button
             v-for="m in ['direct', 'poolish', 'biga'] as const"
             :key="m"
             :aria-pressed="input.fermentationMethod === m"
             role="radio"
             :aria-checked="input.fermentationMethod === m"
-            class="py-3 px-2 text-[8px] font-semibold transition-all cursor-pointer active:scale-90 border-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
+            class="py-2.5 px-1 text-[6px] font-semibold transition-all cursor-pointer active:scale-90 border-2 overflow-hidden text-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             :class="[
               input.fermentationMethod === m
                 ? 'border-neon-green bg-neon-green/20 text-neon-green'
@@ -362,7 +362,7 @@ function updateMultiPhaseNum(
           <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
             🌡️ Temperatura (°C)
           </label>
-          <div class="flex items-center gap-3">
+          <div class="flex items-center gap-2 min-w-0">
             <input
               type="range"
               min="15"
@@ -387,7 +387,7 @@ function updateMultiPhaseNum(
           <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
             ⏱️ Tempo Lievitazione (ore)
           </label>
-          <div class="flex items-center gap-3">
+          <div class="flex items-center gap-2 min-w-0">
             <input
               type="range"
               :min="style?.fermentationH.min ?? 1"
@@ -402,7 +402,7 @@ function updateMultiPhaseNum(
               type="number"
               :value="input.fermentationTimeH"
               aria-label="Tempo di lievitazione in ore"
-              class="w-20 text-center text-lg font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
+              class="w-16 shrink-0 text-center text-[11px] font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
               @change="updateNum('fermentationTimeH', $event)"
             />
           </div>
@@ -496,7 +496,7 @@ function updateMultiPhaseNum(
                 type="number"
                 :value="input.multiPhase.coldPhase.durationH"
                 aria-label="Ore in frigo"
-                class="w-16 text-center text-lg font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-green focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
+                class="w-16 shrink-0 text-center text-[11px] font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-green focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
                 @change="updateMultiPhaseNum('coldPhase', 'durationH', $event)"
               />
             </div>

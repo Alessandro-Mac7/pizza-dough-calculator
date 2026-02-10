@@ -47,8 +47,8 @@ const isTray = computed(() => {
     <div
       class="bg-arcade-panel border-2 border-neon-red p-5 mb-4 text-center"
     >
-      <div class="text-[8px] font-medium text-neon-red/80">Peso Totale Impasto</div>
-      <div class="text-[32px] sm:text-[40px] font-bold mt-1 tabular-nums animate-in text-neon-yellow">{{ result.totalWeight }}g</div>
+      <div class="text-[8px] font-medium text-neon-red/80 uppercase tracking-[2px]">Peso Totale Impasto</div>
+      <div class="text-[28px] sm:text-[34px] font-bold mt-2 tabular-nums animate-in text-neon-yellow tracking-[3px] border-b-3 border-neon-yellow/40 inline-block pb-1">{{ result.totalWeight }}g</div>
       <div class="text-[8px] text-arcade-text/60 mt-2">
         {{ input.numberOfBalls }}
         {{
@@ -78,7 +78,7 @@ const isTray = computed(() => {
               <span class="mr-2">{{ row.emoji }}</span
               >{{ row.name }}
             </td>
-            <td class="py-3 px-4 lg:px-6 text-right font-bold text-[14px] sm:text-[16px] text-neon-green tabular-nums">
+            <td class="py-3 px-4 lg:px-6 text-right font-bold text-[13px] sm:text-[15px] text-neon-green tabular-nums tracking-[1px]">
               {{ row.total }}g
             </td>
             <td

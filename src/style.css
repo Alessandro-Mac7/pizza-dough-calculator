@@ -293,7 +293,20 @@ select:focus-visible {
 /* Number input retro styling */
 input[type='number'] {
   font-family: 'Press Start 2P', monospace;
+  font-size: 11px;
   border-radius: 0 !important;
+  -moz-appearance: textfield;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Sliders must shrink in flex containers */
+input[type='range'] {
+  min-width: 0;
 }
 
 /* Arcade transition for game section */
