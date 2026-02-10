@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { pizzaStyles } from '../data/styles'
+import { t } from '../i18n'
 
 defineProps<{
   selectedId: string
@@ -12,7 +13,7 @@ const emit = defineEmits<{
 
 <template>
   <section class="mb-8">
-    <h2 class="text-[13px] sm:text-[14px] font-bold mb-5 text-neon-cyan arcade-title">1. SCEGLI LO STILE</h2>
+    <h2 class="text-[13px] sm:text-[14px] font-bold mb-5 text-neon-cyan arcade-title">{{ t('styles.title') }}</h2>
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 lg:gap-4">
       <button
         v-for="style in pizzaStyles"
@@ -33,10 +34,10 @@ const emit = defineEmits<{
           {{ style.emoji }}
         </div>
         <div class="font-semibold text-[9px] leading-tight text-neon-yellow">
-          {{ style.name }}
+          {{ t('styles.' + style.id + '.name') }}
         </div>
         <div class="text-[7px] mt-1 text-arcade-text/60 leading-snug line-clamp-2">
-          {{ style.description }}
+          {{ t('styles.' + style.id + '.description') }}
         </div>
         <Transition name="check">
           <div

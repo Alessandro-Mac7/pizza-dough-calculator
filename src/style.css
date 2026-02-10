@@ -333,10 +333,15 @@ input[type='range'] {
 
 /* Print styles */
 @media print {
+  @page {
+    size: A4;
+    margin: 8mm;
+  }
   body {
     background: white !important;
     color: black !important;
-    font-size: 12px !important;
+    font-size: 9px !important;
+    line-height: 1.3 !important;
   }
   body::after {
     display: none !important;
@@ -354,15 +359,137 @@ input[type='range'] {
     text-shadow: none !important;
     box-shadow: none !important;
   }
+
+  /* Print header */
+  .print-only h1 {
+    font-size: 14px !important;
+    margin: 0 !important;
+    padding: 4px 0 !important;
+  }
+  .print-only {
+    padding: 4px 0 !important;
+    margin-bottom: 4px !important;
+    border-bottom-width: 1px !important;
+  }
+
+  /* Sections */
+  section {
+    margin-bottom: 6px !important;
+  }
+
+  /* Section titles */
+  .arcade-title {
+    border-bottom-color: black !important;
+    font-size: 10px !important;
+    margin-bottom: 4px !important;
+    padding-bottom: 2px !important;
+    border-bottom-width: 1px !important;
+  }
+
+  /* Total weight box */
+  section > div:first-of-type[class*="border-neon-red"] {
+    padding: 4px !important;
+    margin-bottom: 4px !important;
+  }
+  section > div:first-of-type[class*="border-neon-red"] div[class*="text-[28px]"],
+  section > div:first-of-type[class*="border-neon-red"] div[class*="text-[34px]"] {
+    font-size: 16px !important;
+    margin-top: 2px !important;
+    padding-bottom: 0 !important;
+    border-bottom: none !important;
+  }
+  section > div:first-of-type[class*="border-neon-red"] div[class*="tracking-[2px]"] {
+    font-size: 7px !important;
+  }
+  section > div:first-of-type[class*="border-neon-red"] div[class*="text-arcade-text/60"] {
+    font-size: 7px !important;
+    margin-top: 1px !important;
+  }
+
+  /* Ingredient table */
   table {
     border-collapse: collapse;
   }
   th,
   td {
     border: 1px solid #999 !important;
+    padding: 1px 4px !important;
+    font-size: 8px !important;
   }
-  .arcade-title {
-    border-bottom-color: black !important;
+  th {
+    font-size: 7px !important;
+  }
+  td[class*="text-[13px]"],
+  td[class*="text-[15px]"] {
+    font-size: 10px !important;
+  }
+
+  /* Baker's percentages summary */
+  div[class*="text-arcade-text/40"][class*="text-center"] {
+    font-size: 6px !important;
+    margin-top: 2px !important;
+  }
+
+  /* Pre-ferment box */
+  div[class*="bg-neon-green/10"] {
+    padding: 3px 6px !important;
+    margin-bottom: 4px !important;
+  }
+  div[class*="bg-neon-green/10"] div[class*="text-[10px]"] {
+    font-size: 8px !important;
+    margin-bottom: 2px !important;
+  }
+  div[class*="bg-neon-green/10"] div[class*="text-[7px]"] {
+    font-size: 6px !important;
+  }
+
+  /* Timeline */
+  div[role="list"] {
+    padding-left: 16px !important;
+  }
+  /* Hide timeline dashed line */
+  div[role="list"] > div[class*="border-dashed"] {
+    display: none !important;
+  }
+  /* Hide timeline badges (squares) */
+  div[role="listitem"] > div[class*="absolute"] {
+    display: none !important;
+  }
+  /* Timeline cards */
+  div[role="listitem"] {
+    margin-bottom: 2px !important;
+    padding-left: 0 !important;
+  }
+  div[role="listitem"] > div[class*="bg-arcade-panel"] {
+    padding: 2px 4px !important;
+    border-width: 1px !important;
+  }
+  div[role="listitem"] span[class*="text-[8px]"] {
+    font-size: 7px !important;
+    padding: 0 2px !important;
+  }
+  div[role="listitem"] span[class*="text-[9px]"] {
+    font-size: 7px !important;
+  }
+  div[role="listitem"] p {
+    font-size: 6px !important;
+    margin: 0 !important;
+    line-height: 1.2 !important;
+  }
+
+  /* Prevent page breaks inside key sections */
+  table,
+  div[role="list"] {
+    page-break-inside: avoid;
+  }
+
+  /* Main container */
+  main {
+    padding: 4px 8px !important;
+  }
+
+  footer {
+    display: none !important;
   }
 }
 

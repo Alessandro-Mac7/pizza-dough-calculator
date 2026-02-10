@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { FermentationSchedule } from '../types'
+import { t } from '../i18n'
 
 const props = defineProps<{
   schedule: FermentationSchedule
@@ -14,7 +15,7 @@ const preFermentHydration = computed(() => (props.schedule.method === 'poolish' 
 <template>
   <section class="mb-8">
     <h2 class="text-[13px] sm:text-[14px] font-bold mb-5 text-neon-cyan arcade-title">
-      ⏱️ PROGRAMMA DI LIEVITAZIONE
+      {{ t('ferm.title') }}
     </h2>
 
     <!-- Pre-impasto -->
@@ -23,36 +24,35 @@ const preFermentHydration = computed(() => (props.schedule.method === 'poolish' 
         v-if="schedule.preFerment"
         class="bg-neon-green/10 border-2 border-neon-green/30 p-4 mb-4"
       >
-        <div class="font-bold text-neon-green text-[10px] mb-2 uppercase tracking-[1px]">Pre-impasto: {{ preFermentLabel }}</div>
+        <div class="font-bold text-neon-green text-[10px] mb-2 uppercase tracking-[1px]">{{ t('ferm.preFerment', { method: preFermentLabel }) }}</div>
         <div class="grid grid-cols-3 gap-3 text-center text-[9px]">
           <div>
-            <div class="text-[7px] text-arcade-text/60">Farina</div>
+            <div class="text-[7px] text-arcade-text/60">{{ t('ferm.flourLabel') }}</div>
             <div class="font-bold text-arcade-text">
               {{ schedule.preFerment.flour }}g
             </div>
           </div>
           <div>
-            <div class="text-[7px] text-arcade-text/60">Acqua</div>
+            <div class="text-[7px] text-arcade-text/60">{{ t('ferm.waterLabel') }}</div>
             <div class="font-bold text-arcade-text">
               {{ schedule.preFerment.water }}g
             </div>
           </div>
           <div>
-            <div class="text-[7px] text-arcade-text/60">Lievito</div>
+            <div class="text-[7px] text-arcade-text/60">{{ t('ferm.yeastLabel') }}</div>
             <div class="font-bold text-arcade-text">
               {{ schedule.preFerment.yeast }}g
             </div>
           </div>
         </div>
         <div class="text-[7px] text-neon-green/70 mt-2">
-          Far fermentare {{ schedule.preFerment.fermentationTimeH }}h a temperatura ambiente
-          (idratazione {{ preFermentHydration }})
+          {{ t('ferm.fermentNote', { hours: schedule.preFerment.fermentationTimeH, hydration: preFermentHydration }) }}
         </div>
       </div>
     </Transition>
 
     <!-- Timeline -->
-    <div class="relative pl-8" role="list" aria-label="Timeline lievitazione">
+    <div class="relative pl-8" role="list" :aria-label="t('ferm.timelineLabel')">
       <div
         class="absolute left-3 top-0 bottom-0 w-0.5 border-l-2 border-dashed border-neon-yellow/40"
         aria-hidden="true"

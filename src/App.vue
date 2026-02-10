@@ -10,6 +10,7 @@ import { useDoughCalculation } from './composables/useDoughCalculation'
 import { useFermentation } from './composables/useFermentation'
 import { useRecipeStorage } from './composables/useRecipeStorage'
 import type { DoughInput } from './types'
+import { t, locale, toggleLocale } from './i18n'
 
 const { input, result, applyStyle, loadFromUrl, toShareUrl } = useDoughCalculation()
 const { schedule } = useFermentation(input, result)
@@ -51,24 +52,32 @@ onMounted(() => {
       </div>
       <div class="max-w-4xl mx-auto text-center relative z-10">
         <h1 class="text-[16px] sm:text-[20px] lg:text-[24px] font-bold tracking-[3px] text-neon-yellow uppercase">
-          🍕 PIZZA DOUGH CALCULATOR
+          🍕 {{ t('app.title') }}
         </h1>
         <p class="text-[8px] sm:text-[9px] text-neon-cyan/60 mt-3 tracking-[1px]">
-          Calcola il tuo impasto perfetto con le percentuali del panificatore
+          {{ t('app.subtitle') }}
         </p>
-        <button
-          class="mt-4 arcade-btn animate-blink"
-          :class="showGame ? 'border-neon-red text-neon-red' : 'border-neon-cyan text-neon-cyan'"
-          @click="showGame = !showGame"
-        >
-          {{ showGame ? 'BACK TO KITCHEN' : 'INSERT COIN' }}
-        </button>
+        <div class="mt-4 flex items-center justify-center gap-3">
+          <button
+            class="arcade-btn animate-blink"
+            :class="showGame ? 'border-neon-red text-neon-red' : 'border-neon-cyan text-neon-cyan'"
+            @click="showGame = !showGame"
+          >
+            {{ showGame ? t('app.backToKitchen') : t('app.insertCoin') }}
+          </button>
+          <button
+            class="arcade-btn text-[8px] py-2 px-3"
+            @click="toggleLocale()"
+          >
+            {{ locale === 'it' ? '🇬🇧 EN' : '🇮🇹 IT' }}
+          </button>
+        </div>
       </div>
     </header>
 
     <!-- Print header -->
     <div class="print-only text-center py-4 border-b-2 border-black mb-4">
-      <h1 class="text-2xl font-bold">🍕 PIZZA DOUGH CALCULATOR</h1>
+      <h1 class="text-2xl font-bold">🍕 {{ t('app.title') }}</h1>
     </div>
 
     <!-- Game section -->
@@ -109,7 +118,7 @@ onMounted(() => {
 
     <!-- Footer -->
     <footer class="text-center py-6 text-[7px] text-arcade-text/30 no-print">
-      Fatto con 🍕 e ❤️ &mdash; PIZZA DOUGH CALCULATOR — ARCADE EDITION
+      {{ t('app.footer') }}
     </footer>
   </div>
 </template>

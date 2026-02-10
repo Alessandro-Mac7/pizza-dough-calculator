@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useGameLoop } from '../composables/useGameLoop'
+import { t } from '../i18n'
 
 // ----- Constants -----
 const COLS = 8
@@ -407,9 +408,9 @@ onUnmounted(() => {
 <template>
   <div class="py-4 px-2" :style="containerStyle">
     <div class="text-center mb-3">
-      <h2 class="text-[14px] sm:text-[16px] text-neon-red arcade-title border-neon-red mb-1">PIZZA INVADERS</h2>
+      <h2 class="text-[14px] sm:text-[16px] text-neon-red arcade-title border-neon-red mb-1">{{ t('game.title') }}</h2>
       <p class="text-[7px] text-arcade-text/50">
-        Spara mozzarelle contro i pomodori invasori!
+        {{ t('game.subtitle') }}
       </p>
     </div>
 
@@ -430,12 +431,12 @@ onUnmounted(() => {
         v-if="gameState === 'idle'"
         class="absolute inset-0 flex flex-col items-center justify-center bg-arcade-dark/80"
       >
-        <div class="text-[12px] text-neon-yellow glow-text mb-4 animate-blink">PRESS START</div>
+        <div class="text-[12px] text-neon-yellow glow-text mb-4 animate-blink">{{ t('game.pressStart') }}</div>
         <div class="text-[7px] text-arcade-text/60 mb-2">
-          ← → Muovi &nbsp; SPAZIO Spara
+          {{ t('game.controls') }}
         </div>
         <div class="text-[7px] text-arcade-text/40">
-          Mobile: tocca SX/DX per muovere, centro per sparare
+          {{ t('game.mobileControls') }}
         </div>
       </div>
 
@@ -444,12 +445,12 @@ onUnmounted(() => {
         v-if="gameState === 'gameover'"
         class="absolute inset-0 flex flex-col items-center justify-center bg-arcade-dark/85"
       >
-        <div class="text-[16px] text-neon-red glow-text mb-3">GAME OVER</div>
+        <div class="text-[16px] text-neon-red glow-text mb-3">{{ t('game.gameOver') }}</div>
         <div class="text-[10px] text-neon-yellow glow-text mb-4">
-          SCORE: {{ score }}
+          {{ t('game.score', { score }) }}
         </div>
         <div class="text-[8px] text-neon-cyan animate-blink">
-          INSERT COIN TO CONTINUE
+          {{ t('game.insertCoin') }}
         </div>
       </div>
     </div>
@@ -457,13 +458,13 @@ onUnmounted(() => {
     <!-- Controls hint for mobile -->
     <div class="mt-2 grid grid-cols-3 gap-1 sm:hidden">
       <div class="text-center text-[7px] text-arcade-text/30 border border-arcade-border/30 py-2">
-        ← LEFT
+        {{ t('game.left') }}
       </div>
       <div class="text-center text-[7px] text-arcade-text/30 border border-arcade-border/30 py-2">
-        FIRE
+        {{ t('game.fire') }}
       </div>
       <div class="text-center text-[7px] text-arcade-text/30 border border-arcade-border/30 py-2">
-        RIGHT →
+        {{ t('game.right') }}
       </div>
     </div>
   </div>

@@ -8,12 +8,16 @@ import type {
   YeastType,
 } from '../types'
 import { calculatePoolish, calculateBiga } from '../utils/calculations'
+import { t, locale } from '../i18n'
 
 const MS_PER_HOUR = 3_600_000
 const MAX_PREFERMENT_H = 18
 
 export function useFermentation(input: Ref<DoughInput>, result: Ref<DoughResult>) {
   const schedule = computed<FermentationSchedule>(() => {
+    // Read locale.value so this computed reacts to locale changes
+    void locale.value
+
     const i = input.value
     const r = result.value
     const now = new Date()
@@ -54,29 +58,38 @@ function buildPreFermentSchedule(
   const preFermentTimeH = Math.min(i.fermentationTimeH * 0.5, MAX_PREFERMENT_H)
   const calc = method === 'poolish' ? calculatePoolish : calculateBiga
   const preFerment = calc(r.flour, i.temperatureC, preFermentTimeH)
-  const actionVerb =
-    method === 'poolish'
-      ? 'Coprire e far fermentare'
-      : 'Impastare brevemente, coprire e far fermentare'
 
   const startTime = new Date(readyTime.getTime() - i.fermentationTimeH * MS_PER_HOUR)
   const preFermentEnd = new Date(startTime.getTime() + preFermentTimeH * MS_PER_HOUR)
 
+  const prepKey = method === 'poolish' ? 'ferm.preparePoolish' : 'ferm.prepareBiga'
+  const descKey = method === 'poolish' ? 'ferm.preparePoolishDesc' : 'ferm.prepareBigaDesc'
+
   const steps: FermentationStep[] = [
     step(
       startTime,
-      `Preparare ${method === 'poolish' ? 'il Poolish' : 'la Biga'}`,
-      `Mescolare ${preFerment.flour}g farina + ${preFerment.water}g acqua + ${preFerment.yeast}g lievito fresco. ${actionVerb} a ${i.temperatureC}°C.`,
+      t(prepKey),
+      t(descKey, {
+        flour: preFerment.flour,
+        water: preFerment.water,
+        yeast: preFerment.yeast,
+        temp: i.temperatureC,
+      }),
     ),
     step(
       preFermentEnd,
-      'Impastare il Tutto',
-      `Aggiungere i restanti ${r.flour - preFerment.flour}g farina, ${r.water - preFerment.water}g acqua, ${r.salt}g sale${oilNote(r.oil)}. Impastare fino a liscio.`,
+      t('ferm.mixAll'),
+      t('ferm.mixAllDesc', {
+        flour: r.flour - preFerment.flour,
+        water: r.water - preFerment.water,
+        salt: r.salt,
+        oilNote: oilNote(r.oil),
+      }),
     ),
     step(
       addHours(preFermentEnd, 0.5),
-      'Puntata',
-      `Lasciar riposare e lievitare l'impasto a ${i.temperatureC}°C.`,
+      t('ferm.bulkRise'),
+      t('ferm.bulkRiseDesc', { temp: i.temperatureC }),
     ),
     ...buildFinalSteps(i, readyTime, preFermentEnd),
   ]
@@ -96,8 +109,12 @@ function buildDirectSchedule(i: DoughInput, r: DoughResult, readyTime: Date): Fe
   const steps: FermentationStep[] = [
     step(
       startTime,
-      'Impastare',
-      `Sciogliere ${r.yeast}g di ${yeastLabel(i.yeastType)} nell'acqua. Mescolare farina + acqua, autolisi 20min, aggiungere sale${oilNote(r.oil)}. Impastare fino a liscio.`,
+      t('ferm.knead'),
+      t('ferm.kneadDesc', {
+        yeast: r.yeast,
+        yeastType: yeastLabel(i.yeastType),
+        oilNote: oilNote(r.oil),
+      }),
     ),
   ]
 
@@ -106,27 +123,27 @@ function buildDirectSchedule(i: DoughInput, r: DoughResult, readyTime: Date): Fe
     steps.push(
       step(
         addHours(startTime, rtHours),
-        'Puntata a Temperatura Ambiente',
-        `Lasciar lievitare a ${i.temperatureC}°C per ~${Math.round(rtHours)}h. Fare 2-3 pieghe.`,
+        t('ferm.roomBulk'),
+        t('ferm.roomBulkDesc', { temp: i.temperatureC, hours: Math.round(rtHours) }),
       ),
       step(
         addHours(startTime, rtHours + 1),
-        'Staglio e Frigo',
-        `Dividere in ${i.numberOfBalls} panetti da ~${i.ballWeight}g. Oliare i contenitori, mettere in frigo a 4°C.`,
+        t('ferm.divideAndFridge'),
+        t('ferm.divideAndFridgeDesc', { balls: i.numberOfBalls, weight: i.ballWeight }),
       ),
       step(
         addHours(readyTime, -2),
-        'Tirare Fuori dal Frigo',
-        'Estrarre i panetti dal frigo. Lasciar tornare a temperatura ambiente (2h).',
+        t('ferm.removeFromFridge'),
+        t('ferm.removeFromFridgeDesc'),
       ),
     )
   } else {
     steps.push(
-      step(addHours(startTime, 1), 'Puntata', `Lasciar lievitare a ${i.temperatureC}°C.`),
+      step(addHours(startTime, 1), t('ferm.bulkRise'), t('ferm.bulkRiseTemp', { temp: i.temperatureC })),
       step(
         addHours(readyTime, -1),
-        'Staglio',
-        `Dividere in ${i.numberOfBalls} panetti da ~${i.ballWeight}g. Far riposare 1h prima di stendere.`,
+        t('ferm.divide'),
+        t('ferm.divideDesc', { balls: i.numberOfBalls, weight: i.ballWeight }),
       ),
     )
   }
@@ -146,13 +163,13 @@ function buildFinalSteps(i: DoughInput, readyTime: Date, afterBulkStart: Date): 
     return [
       step(
         addHours(afterBulkStart, 2),
-        'Frigo',
-        'Dividere in panetti, mettere in contenitori oliati, refrigerare a 4°C.',
+        t('ferm.fridgeOnly'),
+        t('ferm.fridgeOnlyDesc'),
       ),
       step(
         addHours(readyTime, -2),
-        'Tirare Fuori dal Frigo',
-        'Estrarre i panetti dal frigo. Lasciar tornare a temperatura ambiente (2h).',
+        t('ferm.removeFromFridge'),
+        t('ferm.removeFromFridgeDesc'),
       ),
       readyStep(readyTime),
     ]
@@ -161,8 +178,8 @@ function buildFinalSteps(i: DoughInput, readyTime: Date, afterBulkStart: Date): 
   return [
     step(
       addHours(readyTime, -1),
-      'Staglio',
-      `Dividere in ${i.numberOfBalls} panetti da ~${i.ballWeight}g ciascuno. Far riposare 1h prima di stendere.`,
+      t('ferm.divide'),
+      t('ferm.divideDescLong', { balls: i.numberOfBalls, weight: i.ballWeight }),
     ),
     readyStep(readyTime),
   ]
@@ -183,8 +200,12 @@ function buildMultiPhaseSchedule(
   const steps: FermentationStep[] = [
     step(
       startTime,
-      'Impastare',
-      `Sciogliere ${r.yeast}g di ${yeastLabel(i.yeastType)} nell'acqua. Mescolare farina + acqua, autolisi 20min, aggiungere sale${oilNote(r.oil)}. Impastare fino a liscio.`,
+      t('ferm.knead'),
+      t('ferm.kneadDesc', {
+        yeast: r.yeast,
+        yeastType: yeastLabel(i.yeastType),
+        oilNote: oilNote(r.oil),
+      }),
     ),
   ]
 
@@ -192,8 +213,8 @@ function buildMultiPhaseSchedule(
     steps.push(
       step(
         addHours(startTime, 0.5),
-        'Puntata a Temperatura Ambiente',
-        `Lasciar lievitare a ${mp.roomPhase.temperatureC}°C per ${mp.roomPhase.durationH}h. Fare 2-3 pieghe.`,
+        t('ferm.roomBulk'),
+        t('ferm.roomBulkDesc', { temp: mp.roomPhase.temperatureC, hours: mp.roomPhase.durationH }),
       ),
     )
   }
@@ -201,8 +222,13 @@ function buildMultiPhaseSchedule(
   steps.push(
     step(
       roomEnd,
-      'Staglio e Frigo',
-      `Dividere in ${i.numberOfBalls} panetti da ~${i.ballWeight}g. Oliare i contenitori, mettere in frigo a ${mp.coldPhase.temperatureC}°C per ${mp.coldPhase.durationH}h.`,
+      t('ferm.divideAndFridge'),
+      t('ferm.divideAndFridgeMultiDesc', {
+        balls: i.numberOfBalls,
+        weight: i.ballWeight,
+        temp: mp.coldPhase.temperatureC,
+        hours: mp.coldPhase.durationH,
+      }),
     ),
   )
 
@@ -210,8 +236,8 @@ function buildMultiPhaseSchedule(
     steps.push(
       step(
         coldEnd,
-        'Tirare Fuori dal Frigo',
-        `Estrarre i panetti dal frigo. Lasciar tornare a temperatura ambiente (${mp.temperPhase.durationH}h).`,
+        t('ferm.removeFromFridge'),
+        t('ferm.removeFromFridgeMultiDesc', { hours: mp.temperPhase.durationH }),
       ),
     )
   }
@@ -233,7 +259,7 @@ function step(time: Date, action: string, description: string): FermentationStep
 }
 
 function readyStep(time: Date): FermentationStep {
-  return step(time, 'Pronto per Stendere!', "L'impasto è pronto. Stendere, condire e infornare!")
+  return step(time, t('ferm.ready'), t('ferm.readyDesc'))
 }
 
 function addHours(date: Date, hours: number): Date {
@@ -241,18 +267,19 @@ function addHours(date: Date, hours: number): Date {
 }
 
 function formatTime(date: Date): string {
-  return date.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit', hour12: false })
+  const loc = locale.value === 'it' ? 'it-IT' : 'en-GB'
+  return date.toLocaleTimeString(loc, { hour: '2-digit', minute: '2-digit', hour12: false })
 }
 
 function yeastLabel(type: YeastType): string {
-  const labels: Record<YeastType, string> = {
-    fresh: 'lievito fresco',
-    dry: 'lievito secco',
-    sourdough: 'lievito madre',
+  const keys: Record<YeastType, string> = {
+    fresh: 'ferm.yeastFresh',
+    dry: 'ferm.yeastDry',
+    sourdough: 'ferm.yeastSourdough',
   }
-  return labels[type]
+  return t(keys[type])
 }
 
 function oilNote(oilGrams: number): string {
-  return oilGrams > 0 ? `, ${oilGrams}g olio` : ''
+  return oilGrams > 0 ? t('ferm.oilNote', { oil: oilGrams }) : ''
 }

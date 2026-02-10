@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import type { DoughInput, PizzaStyle, MultiPhaseFermentation } from '../types'
 import { getStyleById } from '../data/styles'
 import { flourTypes, getFloursForStyle } from '../data/flours'
+import { t } from '../i18n'
 
 const props = defineProps<{
   input: DoughInput
@@ -62,17 +63,17 @@ function updateMultiPhaseNum(
 
 <template>
   <section class="mb-8">
-    <h2 class="text-[13px] sm:text-[14px] font-bold mb-5 text-neon-cyan arcade-title">2. CONFIGURA L'IMPASTO</h2>
+    <h2 class="text-[13px] sm:text-[14px] font-bold mb-5 text-neon-cyan arcade-title">{{ t('calc.title') }}</h2>
 
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       <!-- Numero pizze -->
       <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
         <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
-          {{ isTray ? '🟫 Numero Teglie' : '🍕 Numero Pizze' }}
+          {{ isTray ? t('calc.numberOfTrays') : t('calc.numberOfPizzas') }}
         </label>
         <div class="flex items-center gap-3">
           <button
-            aria-label="Diminuisci quantità"
+            :aria-label="t('calc.decreaseQty')"
             class="w-12 h-12 border-2 border-neon-red bg-transparent text-xl font-bold flex items-center justify-center active:scale-90 transition-all cursor-pointer text-neon-red hover:bg-neon-red/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             @click="update('numberOfBalls', Math.max(1, input.numberOfBalls - 1))"
           >
@@ -85,7 +86,7 @@ function updateMultiPhaseNum(
             {{ input.numberOfBalls }}
           </span>
           <button
-            aria-label="Aumenta quantità"
+            :aria-label="t('calc.increaseQty')"
             class="w-12 h-12 border-2 border-neon-green bg-transparent text-xl font-bold flex items-center justify-center active:scale-90 transition-all cursor-pointer text-neon-green hover:bg-neon-green/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             @click="update('numberOfBalls', Math.min(20, input.numberOfBalls + 1))"
           >
@@ -97,7 +98,7 @@ function updateMultiPhaseNum(
       <!-- Peso pallina -->
       <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
         <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
-          {{ isTray ? '⚖️ Peso Teglia (g)' : '⚖️ Peso Pallina (g)' }}
+          {{ isTray ? t('calc.trayWeight') : t('calc.ballWeight') }}
         </label>
         <div class="flex items-center gap-2 min-w-0">
           <input
@@ -106,14 +107,14 @@ function updateMultiPhaseNum(
             :max="style?.ballWeight.max ?? 500"
             step="10"
             :value="input.ballWeight"
-            :aria-label="isTray ? 'Peso teglia' : 'Peso pallina'"
+            :aria-label="isTray ? t('calc.trayWeight') : t('calc.ballWeight')"
             class="flex-1"
             @input="updateNum('ballWeight', $event)"
           />
           <input
             type="number"
             :value="input.ballWeight"
-            aria-label="Peso in grammi"
+            :aria-label="t('calc.ballWeight')"
             class="w-16 shrink-0 text-center text-[11px] font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             @change="updateNum('ballWeight', $event)"
           />
@@ -122,14 +123,14 @@ function updateMultiPhaseNum(
           v-if="style && style.id !== 'custom'"
           class="text-[7px] text-arcade-text/40 mt-1"
         >
-          Consigliato: {{ style.ballWeight.min }}-{{ style.ballWeight.max }}g
+          {{ t('calc.recommended', { min: style.ballWeight.min, max: style.ballWeight.max, unit: 'g' }) }}
         </div>
       </div>
 
       <!-- Idratazione -->
       <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
         <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
-          💧 Idratazione (%)
+          {{ t('calc.hydration') }}
         </label>
         <div class="flex items-center gap-2 min-w-0">
           <input
@@ -138,14 +139,14 @@ function updateMultiPhaseNum(
             :max="style?.hydration.max ?? 100"
             step="1"
             :value="input.hydration"
-            aria-label="Percentuale idratazione"
+            :aria-label="t('calc.hydration')"
             class="flex-1"
             @input="updateNum('hydration', $event)"
           />
           <input
             type="number"
             :value="input.hydration"
-            aria-label="Percentuale idratazione"
+            :aria-label="t('calc.hydration')"
             class="w-16 shrink-0 text-center text-[11px] font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             @change="updateNum('hydration', $event)"
           />
@@ -154,23 +155,23 @@ function updateMultiPhaseNum(
           v-if="style && style.id !== 'custom'"
           class="text-[7px] text-arcade-text/40 mt-1"
         >
-          Consigliato: {{ style.hydration.min }}-{{ style.hydration.max }}%
+          {{ t('calc.recommended', { min: style.hydration.min, max: style.hydration.max, unit: '%' }) }}
         </div>
       </div>
 
       <!-- Farina -->
       <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
         <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
-          🌾 Tipo di Farina
+          {{ t('calc.flour') }}
         </label>
         <select
           :value="input.flourId"
-          aria-label="Tipo di farina"
+          :aria-label="t('calc.flour')"
           class="w-full p-3 border-2 border-arcade-border bg-arcade-panel text-arcade-text text-[8px] cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
           @change="update('flourId', ($event.target as HTMLSelectElement).value)"
         >
           <option v-for="f in availableFlours" :key="f.id" :value="f.id">
-            {{ f.name }} ({{ f.protein.min }}-{{ f.protein.max }}% proteine)
+            {{ t('flours.' + f.id + '.name') }} ({{ f.protein.min }}-{{ f.protein.max }}% {{ t('calc.protein') }})
           </option>
         </select>
       </div>
@@ -178,7 +179,7 @@ function updateMultiPhaseNum(
       <!-- Sale -->
       <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
         <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
-          🧂 Sale (%)
+          {{ t('calc.salt') }}
         </label>
         <div class="flex items-center gap-2 min-w-0">
           <input
@@ -187,7 +188,7 @@ function updateMultiPhaseNum(
             max="5"
             step="0.1"
             :value="input.salt"
-            aria-label="Percentuale sale"
+            :aria-label="t('calc.salt')"
             class="flex-1"
             @input="updateNum('salt', $event)"
           />
@@ -195,7 +196,7 @@ function updateMultiPhaseNum(
             type="number"
             :value="input.salt"
             step="0.1"
-            aria-label="Percentuale sale"
+            :aria-label="t('calc.salt')"
             class="w-16 shrink-0 text-center text-[11px] font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             @change="updateNum('salt', $event)"
           />
@@ -205,7 +206,7 @@ function updateMultiPhaseNum(
       <!-- Olio -->
       <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
         <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
-          🫒 Olio (%)
+          {{ t('calc.oil') }}
         </label>
         <div class="flex items-center gap-2 min-w-0">
           <input
@@ -214,7 +215,7 @@ function updateMultiPhaseNum(
             max="15"
             step="0.5"
             :value="input.oil"
-            aria-label="Percentuale olio"
+            :aria-label="t('calc.oil')"
             class="flex-1"
             @input="updateNum('oil', $event)"
           />
@@ -222,7 +223,7 @@ function updateMultiPhaseNum(
             type="number"
             :value="input.oil"
             step="0.5"
-            aria-label="Percentuale olio"
+            :aria-label="t('calc.oil')"
             class="w-16 shrink-0 text-center text-[11px] font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             @change="updateNum('oil', $event)"
           />
@@ -232,7 +233,7 @@ function updateMultiPhaseNum(
       <!-- Zucchero -->
       <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
         <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
-          🍬 Zucchero (%)
+          {{ t('calc.sugar') }}
         </label>
         <div class="flex items-center gap-2 min-w-0">
           <input
@@ -241,7 +242,7 @@ function updateMultiPhaseNum(
             max="10"
             step="0.5"
             :value="input.sugar"
-            aria-label="Percentuale zucchero"
+            :aria-label="t('calc.sugar')"
             class="flex-1"
             @input="updateNum('sugar', $event)"
           />
@@ -249,7 +250,7 @@ function updateMultiPhaseNum(
             type="number"
             :value="input.sugar"
             step="0.5"
-            aria-label="Percentuale zucchero"
+            :aria-label="t('calc.sugar')"
             class="w-16 shrink-0 text-center text-[11px] font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             @change="updateNum('sugar', $event)"
           />
@@ -259,7 +260,7 @@ function updateMultiPhaseNum(
       <!-- Malto -->
       <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
         <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
-          🍯 Malto (%)
+          {{ t('calc.malt') }}
         </label>
         <div class="flex items-center gap-2 min-w-0">
           <input
@@ -268,7 +269,7 @@ function updateMultiPhaseNum(
             max="3"
             step="0.1"
             :value="input.malt"
-            aria-label="Percentuale malto"
+            :aria-label="t('calc.malt')"
             class="flex-1"
             @input="updateNum('malt', $event)"
           />
@@ -276,7 +277,7 @@ function updateMultiPhaseNum(
             type="number"
             :value="input.malt"
             step="0.1"
-            aria-label="Percentuale malto"
+            :aria-label="t('calc.malt')"
             class="w-16 shrink-0 text-center text-[11px] font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
             @change="updateNum('malt', $event)"
           />
@@ -286,9 +287,9 @@ function updateMultiPhaseNum(
       <!-- Tipo Lievito -->
       <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30 sm:col-span-2 lg:col-span-1">
         <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-3">
-          🍞 Tipo di Lievito
+          {{ t('calc.yeastType') }}
         </label>
-        <div class="grid grid-cols-3 gap-2" role="radiogroup" aria-label="Tipo di lievito">
+        <div class="grid grid-cols-3 gap-2" role="radiogroup" :aria-label="t('calc.yeastType')">
           <button
             v-for="yt in ['fresh', 'dry', 'sourdough'] as const"
             :key="yt"
@@ -303,7 +304,7 @@ function updateMultiPhaseNum(
             ]"
             @click="update('yeastType', yt)"
           >
-            {{ yt === 'fresh' ? 'Fresco' : yt === 'dry' ? 'Secco' : 'Madre' }}
+            {{ yt === 'fresh' ? t('calc.yeastFresh') : yt === 'dry' ? t('calc.yeastDry') : t('calc.yeastSourdough') }}
           </button>
         </div>
       </div>
@@ -311,9 +312,9 @@ function updateMultiPhaseNum(
       <!-- Metodo Lievitazione -->
       <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30 sm:col-span-2 lg:col-span-2">
         <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-3">
-          🧪 Metodo Lievitazione
+          {{ t('calc.fermentationMethod') }}
         </label>
-        <div class="grid grid-cols-3 gap-2" role="radiogroup" aria-label="Metodo di lievitazione">
+        <div class="grid grid-cols-3 gap-2" role="radiogroup" :aria-label="t('calc.fermentationMethod')">
           <button
             v-for="m in ['direct', 'poolish', 'biga'] as const"
             :key="m"
@@ -328,7 +329,7 @@ function updateMultiPhaseNum(
             ]"
             @click="update('fermentationMethod', m)"
           >
-            {{ m === 'direct' ? 'Diretta' : m === 'poolish' ? 'Poolish' : 'Biga' }}
+            {{ m === 'direct' ? t('calc.methodDirect') : m === 'poolish' ? t('calc.methodPoolish') : t('calc.methodBiga') }}
           </button>
         </div>
       </div>
@@ -337,7 +338,7 @@ function updateMultiPhaseNum(
       <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30 sm:col-span-2 lg:col-span-3">
         <div class="flex items-center justify-between">
           <label class="text-[8px] font-semibold text-neon-cyan/70">
-            🧊 Lievitazione in Frigo (multi-fase)
+            {{ t('calc.coldFermentation') }}
           </label>
           <button
             type="button"
@@ -360,7 +361,7 @@ function updateMultiPhaseNum(
         <!-- Temperatura -->
         <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
           <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
-            🌡️ Temperatura (°C)
+            {{ t('calc.temperature') }}
           </label>
           <div class="flex items-center gap-2 min-w-0">
             <input
@@ -369,14 +370,14 @@ function updateMultiPhaseNum(
               max="35"
               step="1"
               :value="input.temperatureC"
-              aria-label="Temperatura ambiente"
+              :aria-label="t('calc.temperature')"
               class="flex-1"
               @input="updateNum('temperatureC', $event)"
             />
             <input
               type="number"
               :value="input.temperatureC"
-              aria-label="Temperatura ambiente"
+              :aria-label="t('calc.temperature')"
               class="w-16 shrink-0 text-center text-[11px] font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
               @change="updateNum('temperatureC', $event)"
             />
@@ -386,7 +387,7 @@ function updateMultiPhaseNum(
         <!-- Tempo Lievitazione -->
         <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
           <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
-            ⏱️ Tempo Lievitazione (ore)
+            {{ t('calc.fermentationTime') }}
           </label>
           <div class="flex items-center gap-2 min-w-0">
             <input
@@ -395,14 +396,14 @@ function updateMultiPhaseNum(
               :max="style?.fermentationH.max ?? 120"
               step="1"
               :value="input.fermentationTimeH"
-              aria-label="Tempo di lievitazione in ore"
+              :aria-label="t('calc.fermentationTime')"
               class="flex-1"
               @input="updateNum('fermentationTimeH', $event)"
             />
             <input
               type="number"
               :value="input.fermentationTimeH"
-              aria-label="Tempo di lievitazione in ore"
+              :aria-label="t('calc.fermentationTime')"
               class="w-16 shrink-0 text-center text-[11px] font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
               @change="updateNum('fermentationTimeH', $event)"
             />
@@ -411,7 +412,7 @@ function updateMultiPhaseNum(
             v-if="style && style.id !== 'custom'"
             class="text-[7px] text-arcade-text/40 mt-1"
           >
-            Consigliato: {{ style.fermentationH.min }}-{{ style.fermentationH.max }}h
+            {{ t('calc.recommended', { min: style.fermentationH.min, max: style.fermentationH.max, unit: 'h' }) }}
           </div>
         </div>
       </template>
@@ -421,34 +422,34 @@ function updateMultiPhaseNum(
         <!-- Fase 1: Ambiente -->
         <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
           <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
-            🏠 Fase 1: Ambiente
+            {{ t('calc.phase1Room') }}
           </label>
           <div class="space-y-2">
             <div class="flex items-center gap-2">
-              <span class="text-[7px] text-arcade-text/50 w-12">Temp</span>
+              <span class="text-[7px] text-arcade-text/50 w-12">{{ t('calc.temp') }}</span>
               <input
                 type="range"
                 min="15"
                 max="35"
                 step="1"
                 :value="input.multiPhase.roomPhase.temperatureC"
-                aria-label="Temperatura fase ambiente"
+                :aria-label="t('calc.phase1Room') + ' ' + t('calc.temp')"
                 class="flex-1"
                 @input="updateMultiPhaseNum('roomPhase', 'temperatureC', $event)"
               />
               <span class="text-[11px] font-bold text-neon-yellow min-w-[3ch] text-center tabular-nums tracking-[1px]">
-                {{ input.multiPhase.roomPhase.temperatureC }}°
+                {{ input.multiPhase.roomPhase.temperatureC }}&deg;
               </span>
             </div>
             <div class="flex items-center gap-2">
-              <span class="text-[7px] text-arcade-text/50 w-12">Ore</span>
+              <span class="text-[7px] text-arcade-text/50 w-12">{{ t('calc.hours') }}</span>
               <input
                 type="range"
                 min="0"
                 max="8"
                 step="0.5"
                 :value="input.multiPhase.roomPhase.durationH"
-                aria-label="Durata fase ambiente"
+                :aria-label="t('calc.phase1Room') + ' ' + t('calc.hours')"
                 class="flex-1"
                 @input="updateMultiPhaseNum('roomPhase', 'durationH', $event)"
               />
@@ -462,41 +463,41 @@ function updateMultiPhaseNum(
         <!-- Fase 2: Frigo -->
         <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
           <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
-            🧊 Fase 2: Frigo
+            {{ t('calc.phase2Fridge') }}
           </label>
           <div class="space-y-2">
             <div class="flex items-center gap-2">
-              <span class="text-[7px] text-arcade-text/50 w-12">Temp</span>
+              <span class="text-[7px] text-arcade-text/50 w-12">{{ t('calc.temp') }}</span>
               <input
                 type="range"
                 min="0"
                 max="10"
                 step="1"
                 :value="input.multiPhase.coldPhase.temperatureC"
-                aria-label="Temperatura frigo"
+                :aria-label="t('calc.phase2Fridge') + ' ' + t('calc.temp')"
                 class="flex-1"
                 @input="updateMultiPhaseNum('coldPhase', 'temperatureC', $event)"
               />
               <span class="text-[11px] font-bold text-neon-green min-w-[3ch] text-center tabular-nums tracking-[1px]">
-                {{ input.multiPhase.coldPhase.temperatureC }}°
+                {{ input.multiPhase.coldPhase.temperatureC }}&deg;
               </span>
             </div>
             <div class="flex items-center gap-2">
-              <span class="text-[7px] text-arcade-text/50 w-12">Ore</span>
+              <span class="text-[7px] text-arcade-text/50 w-12">{{ t('calc.hours') }}</span>
               <input
                 type="range"
                 min="4"
                 max="96"
                 step="1"
                 :value="input.multiPhase.coldPhase.durationH"
-                aria-label="Durata frigo"
+                :aria-label="t('calc.phase2Fridge') + ' ' + t('calc.hours')"
                 class="flex-1"
                 @input="updateMultiPhaseNum('coldPhase', 'durationH', $event)"
               />
               <input
                 type="number"
                 :value="input.multiPhase.coldPhase.durationH"
-                aria-label="Ore in frigo"
+                :aria-label="t('calc.phase2Fridge') + ' ' + t('calc.hours')"
                 class="w-16 shrink-0 text-center text-[11px] font-bold border-2 border-arcade-border bg-transparent py-1 text-neon-green focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan"
                 @change="updateMultiPhaseNum('coldPhase', 'durationH', $event)"
               />
@@ -507,17 +508,17 @@ function updateMultiPhaseNum(
         <!-- Fase 3: Ripresa -->
         <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30">
           <label class="block text-[8px] font-semibold text-neon-cyan/70 mb-2">
-            🌡️ Fase 3: Ripresa a Temperatura Ambiente
+            {{ t('calc.phase3Temper') }}
           </label>
           <div class="flex items-center gap-2">
-            <span class="text-[7px] text-arcade-text/50 w-12">Ore</span>
+            <span class="text-[7px] text-arcade-text/50 w-12">{{ t('calc.hours') }}</span>
             <input
               type="range"
               min="0.5"
               max="4"
               step="0.5"
               :value="input.multiPhase.temperPhase.durationH"
-              aria-label="Durata ripresa"
+              :aria-label="t('calc.phase3Temper') + ' ' + t('calc.hours')"
               class="flex-1"
               @input="updateMultiPhaseNum('temperPhase', 'durationH', $event)"
             />
@@ -531,7 +532,7 @@ function updateMultiPhaseNum(
         <div class="bg-arcade-panel border-2 border-arcade-border p-4 transition-all hover:border-neon-cyan/30 flex items-center justify-center">
           <div class="text-center">
             <div class="text-[8px] font-semibold text-neon-cyan/70 mb-1">
-              ⏱️ Tempo Totale
+              {{ t('calc.totalTime') }}
             </div>
             <span class="text-[14px] font-bold text-neon-yellow tabular-nums tracking-[1px]" aria-live="polite">
               {{ multiPhaseTotalH }}h
