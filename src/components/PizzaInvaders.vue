@@ -429,10 +429,12 @@ onUnmounted(() => {
       <!-- Idle overlay -->
       <div
         v-if="gameState === 'idle'"
-        class="absolute inset-0 flex flex-col items-center justify-center bg-arcade-dark/80"
+        class="absolute inset-0 flex flex-col items-center justify-center bg-arcade-dark/80 cursor-pointer"
+        @click="onCanvasTap"
       >
-        <div class="text-[12px] text-neon-yellow glow-text mb-4 animate-blink">{{ t('game.pressStart') }}</div>
-        <div class="text-[7px] text-arcade-text/60 mb-2">
+        <div class="text-[12px] text-neon-yellow glow-text mb-4 animate-blink hidden sm:block">{{ t('game.pressStart') }}</div>
+        <div class="text-[12px] text-neon-yellow glow-text mb-4 animate-blink sm:hidden">{{ t('game.tapToStart') }}</div>
+        <div class="text-[7px] text-arcade-text/60 mb-2 hidden sm:block">
           {{ t('game.controls') }}
         </div>
         <div class="text-[7px] text-arcade-text/40">
@@ -443,14 +445,18 @@ onUnmounted(() => {
       <!-- Game over overlay -->
       <div
         v-if="gameState === 'gameover'"
-        class="absolute inset-0 flex flex-col items-center justify-center bg-arcade-dark/85"
+        class="absolute inset-0 flex flex-col items-center justify-center bg-arcade-dark/85 cursor-pointer"
+        @click="onCanvasTap"
       >
         <div class="text-[16px] text-neon-red glow-text mb-3">{{ t('game.gameOver') }}</div>
         <div class="text-[10px] text-neon-yellow glow-text mb-4">
           {{ t('game.score', { score }) }}
         </div>
-        <div class="text-[8px] text-neon-cyan animate-blink">
+        <div class="text-[8px] text-neon-cyan animate-blink hidden sm:block">
           {{ t('game.insertCoin') }}
+        </div>
+        <div class="text-[8px] text-neon-cyan animate-blink sm:hidden">
+          {{ t('game.tapToContinue') }}
         </div>
       </div>
     </div>
